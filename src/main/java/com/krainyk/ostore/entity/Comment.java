@@ -18,6 +18,7 @@ public class Comment {
     private Long id;
     @Column(nullable = false)
     private Integer mark;
+    @Column(columnDefinition = "text")
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTime;

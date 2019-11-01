@@ -21,6 +21,8 @@ public class Order {
     private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime orderDate;
+    private Integer discount;
+    private Double totalPrice;
     private String comment;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime shippedDate;
@@ -33,6 +35,9 @@ public class Order {
 
     @ManyToOne
     private Delivery delivery;
+
+    @ManyToOne
+    private Address address;
 
     @OneToMany(mappedBy = "order")
     private List<ProductCount> productCountList = new ArrayList<>();
