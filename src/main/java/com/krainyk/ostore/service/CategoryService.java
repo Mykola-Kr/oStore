@@ -20,7 +20,7 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     // changing request to entity for using in update, create methods
-    private Category CategoryRequestToCategory (Category category, CategoryRequest request) {
+    private Category categoryRequestToCategory(Category category, CategoryRequest request) {
         if (category == null) {
             category = new Category();
         }
@@ -29,18 +29,18 @@ public class CategoryService {
     }
 
     public void create (CategoryRequest request) {
-        categoryRepository.save(CategoryRequestToCategory(null, request));
+        categoryRepository.save(categoryRequestToCategory(null, request));
     }
 
     // method for finding one category by it's id for using in update, delete methods. It throws exception if
     // category with such id doesn't exist
-    private Category findOne(Long id) {
+    public Category findOne(Long id) {
         return categoryRepository.findById(id).orElseThrow(() -> new NoMatchesException("Category with id " + id
                 + " doesn't exist"));
     }
 
     public void update (CategoryRequest request, Long id) {
-        categoryRepository.save(CategoryRequestToCategory(findOne(id), request));
+        categoryRepository.save(categoryRequestToCategory(findOne(id), request));
     }
 
     public void delete(Long id) {

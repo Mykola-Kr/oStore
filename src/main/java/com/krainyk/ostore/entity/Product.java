@@ -34,4 +34,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Comment> comments = new ArrayList<>();
 
+    @ManyToMany
+    private List<SpecificationValue> specificationValues = new ArrayList<>();
+
 }
