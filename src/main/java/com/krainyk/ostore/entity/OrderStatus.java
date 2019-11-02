@@ -17,7 +17,7 @@ public class OrderStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    private String name;
+    private String status;
 
     @OneToMany(mappedBy = "orderStatus")
     private List<Order> orders = new ArrayList<>();
