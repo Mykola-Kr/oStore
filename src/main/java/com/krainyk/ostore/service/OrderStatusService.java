@@ -1,6 +1,6 @@
 package com.krainyk.ostore.service;
 
-import com.krainyk.ostore.dto.request.OrderStatusRquest;
+import com.krainyk.ostore.dto.request.OrderStatusRequest;
 import com.krainyk.ostore.dto.respond.OrderStatusRespond;
 import com.krainyk.ostore.entity.OrderStatus;
 import com.krainyk.ostore.exceptions.HasDependenciesException;
@@ -18,7 +18,7 @@ public class OrderStatusService {
     @Autowired
     private OrderStatusRepository orderStatusRepository;
 
-    private OrderStatus orderStatusRequestToOrderStatus(OrderStatus orderStatus, OrderStatusRquest request) {
+    private OrderStatus orderStatusRequestToOrderStatus(OrderStatus orderStatus, OrderStatusRequest request) {
         if (orderStatus == null) {
             orderStatus = new OrderStatus();
         }
@@ -26,7 +26,7 @@ public class OrderStatusService {
         return orderStatus;
     }
 
-    public void create(OrderStatusRquest request) {
+    public void create(OrderStatusRequest request) {
         orderStatusRepository.save(orderStatusRequestToOrderStatus(null, request));
     }
 
@@ -35,7 +35,7 @@ public class OrderStatusService {
                 new NoMatchesException("OrderStatus with id " + id + " does not exist."));
     }
 
-    public void update(Long id, OrderStatusRquest request) {
+    public void update(Long id, OrderStatusRequest request) {
         orderStatusRepository.save(orderStatusRequestToOrderStatus(findOne(id), request));
     }
 

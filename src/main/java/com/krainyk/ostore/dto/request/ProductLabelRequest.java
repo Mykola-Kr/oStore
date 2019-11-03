@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class OrderStatusRquest {
+public class ProductLabelRequest {
     @NotBlank
-    private String status;
+    private String name;
 }

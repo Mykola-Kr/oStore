@@ -28,6 +28,9 @@ public class Product {
     @ManyToOne
     private Subcategory subcategory;
 
+    @ManyToOne
+    private ProductLabel label;
+
     @OneToMany(mappedBy = "product")
     private List<ProductCount> productCountList = new ArrayList<>();
 
