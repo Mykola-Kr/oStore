@@ -22,7 +22,7 @@ public class Comment {
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTime;
-    private Boolean isPublished;
+    private Boolean isAllowed;
 
     @ManyToOne
     private User user;

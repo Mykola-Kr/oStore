@@ -1,0 +1,18 @@
+
+.brand-logo{
+    margin-left: 15px;
+}
+#dashboard{
+    margin-left: 15px;
+}
+#catalog {
+    width: 280px;
+}
+@media only screen and (min-width : 992px) {
+    .invisible-top {
+        top: 64px;
+    }
+    main {
+        padding-left: 200px;
+    }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="style-admin.css">
+    <title>Admin category</title>
+</head>
+<body>
+<header>
+    <nav>
+        <div class="nav-wrapper grey lighten-1">
+            <a href="#" class="brand-logo">oStore</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">User</a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <ul id="catalog" class="sidenav sidenav-fixed invisible-top grey lighten-1">
+        <li>
+            <h6 id="dashboard" class="indigo-text text-darken-4">Dashboard:</h6>
+            <ul id="catalog-ul" class="collapsible">
+                <li>
+                    <a class="collapsible-header indigo-text text-darken-4">Catalog</a>
+                    <div class="collapsible-body">
+                        <ul id="" class="collection grey lighten-2">
+                            <li><a href="admin-category.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">category</a></li>
+                            <li><a href="admin-subcategory.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">subcategory</a></li>
+                            <li><a href="admin-product.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">product</a></li>
+                            <li><a href="admin-specification.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification</a></li>
+                            <li><a href="admin-specification-value.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification value</a></li>
+                            <li><a href="admin-product-label.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">product label</a></li>
+                            <li><a href="admin-delivery" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery</a></li>
+                            <li><a href="admin-delivery-status" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery status</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a class="collapsible-header indigo-text text-darken-4">Sales</a>
+                    <div class="collapsible-body">
+                        <ul class="collection grey lighten-2">
+                            <li><a href="admin-order" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">orders</a></li>
+                            <li><a href="admin-order-status" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">order status</a></li>
+                            <li><a href="#" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">returns</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="admin-customers" class="collapsible-header indigo-text text-darken-4">Customers</a>
+                </li>
+                <li>
+                    <a href="admin-comments" class="collapsible-header indigo-text text-darken-4">Comments</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col l11">
+                <h5>Categories</h5>
+            </div>
+             <div class="col l1">
+                <h5><a class="btn-floating btn-small waves-effect waves-light teal lighten-2">
+                    <i id="open-create-form" data-target="modal1" class="update-btn modal-trigger material-icons">add</i></a></h5>
+             </div>
+        </div>
+    <!-- table with categories -->
+        <table class="">
+            <thead>
+            <tr>
+                <th><a href="#" class="sort black-text" data-id="id">Id</a></th>
+                <th><a href="#" class="sort black-text" data-id="name">Name</a></th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody id="categories">
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal Structure for update-->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h6 id="modal-id">Category id: </h6><br>
+            <form class="col s12">
+                <div class="input-field col s9">
+                    <input  id="icon_name_create" type="text">
+                    <button id="send-btn" class="waves-effect waves-light btn-small">SUBMIT</button>
+                    <label for="icon_name_create">Name</label>
+                </div>
+            </form>
+        </div>
+        <div id="footer" class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="cancel">Cancel</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="update">Update</a>
+        </div>
+    </div>
+</main>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="admin-category.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.sidenav').sidenav();
+    });
+</script>
+
+</body>

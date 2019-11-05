@@ -21,5 +21,5 @@ public class CommentRequests {
     private Long productId;
     @NotNull
     private Long userId;
-    private Boolean isPublished;
+    private Boolean isAllowed;
 }
