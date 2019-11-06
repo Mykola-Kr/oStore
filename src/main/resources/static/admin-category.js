@@ -1,13 +1,14 @@
 const HOST = 'http://localhost:8080';
 const $categoryTable = $('#categories');
-const $createButton = $('#send-btn');
+const $createButton = $('#submit-btn');
 const $nameInput = $('#icon_name_create');
-const $openCreateForm = $('#open-create-form');
+const $openCreateForm = $('#open_create_form');
 const $update = $('#update');
-const $modalName = $('#modal-id');
+const $modalName = $('#modal_header');
 const $modalFooter = $('#footer');
 var $asc = true;
 
+// creating table
 const appendCategory = (category) => {
     $categoryTable.append(`
         <tr>
@@ -36,7 +37,7 @@ const get = {
         $categoryTable.html('');
         appendCategories(res);
         clickOnSort();
-        // clickOnDeleteButton();
+        clickOnDeleteButton();
         clickOnUpdateButton();
     },
     ...error
@@ -88,11 +89,11 @@ $createButton.click( e => {
     });
 });
 
-$openCreateForm.click( e => {
+$openCreateForm.click( () => {
+    $modalName.text('Create category');
     $nameInput.val('');
     $modalFooter.hide();
     $createButton.show();
-    $modalName.text('Create category');
 });
 //------------------------------------------------------------------------------------------------------
 //updating category
@@ -133,6 +134,32 @@ $update.click( e => {
 });
 //--------------------------------------------------------------------------------------------------
 
+//delete category
+const deleteRequest = id => {
+    $.ajax({
+        url: `${HOST}/category?id=` + id,
+        type: 'DELETE',
+        success: res => {
+            getAllCategories();
+        },
+        ...error
+    });
+};
+
+const clickOnDeleteButton = _ => {
+    $('.delete-btn').on('click', e => {
+        let id = e.target.getAttribute('data-id');
+        $('#modal-delete').text('Do you want to delete category with id: ' + id + ' ?');
+        confirmDelete(id);
+    });
+};
+
+const confirmDelete = (id) => {
+    $('#delete').off().on('click', e => {
+        deleteRequest(id);
+    });
+};
+//-----------------------------------------------------------------------------------------------------------
 $(document).ready(function(){
     $('.modal').modal();
 });

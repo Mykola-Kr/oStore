@@ -1,18 +1,31 @@
 
+nav{
+    z-index: 10000;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+}
 .brand-logo{
     margin-left: 15px;
+}
+.content{
+    padding-right: 15px;
+}
+.filter-div{
+    height: 500px;
 }
 #dashboard{
     margin-left: 15px;
 }
 #catalog {
-    width: 280px;
+    width: 250px;
 }
 @media only screen and (min-width : 992px) {
     .invisible-top {
-        top: 64px;
+        top: 65px;
     }
     main {
-        padding-left: 200px;
+        padding-left: 270px;
+        padding-top: 70px;
     }
 }
