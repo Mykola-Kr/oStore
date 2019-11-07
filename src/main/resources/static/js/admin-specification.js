@@ -1,8 +1,9 @@
 const HOST = 'http://localhost:8080';
-const $subcategoryTable = $('#subcategories');
-const $categorySelects = $('.category_select');
-const $categorySelectCreate = $('#create_form_category_select');
-const $categorySelectFilter = $('#category_filter_select')
+const $specificationTable = $('#specifications');
+const $subcategorySelects = $('.subcategory_select');
+const $subcategorySelectCreate = $('#create_form_subcategory_select');
+const $subcategorySelectFilter = $('#subcategory_filter_select');
+const $subcategoryList = $('#subcategories_names');
 const $createButton = $('#submit-btn');
 const $nameInput = $('#icon_name_create');
 const $openCreateForm = $('#open_create_form');
@@ -30,11 +31,12 @@ const get = {
     type: 'GET',
     success: res => {
         $pagination.html('');
-        $subcategoryTable.html('');
-        appendSubcategories(res.data);
+        $specificationTable.html('');
+        appendSpecifications(res.data);
         clickOnUpdateButton();
         clickOnDeleteButton();
         clickOnSort();
+        clickOnListButton();
         appendPages(res.totalPages, +page + 1);
         pages = res.totalPages;
     },
@@ -42,54 +44,74 @@ const get = {
 };
 
 //creating table
-const appendSubcategory = (subcategory) => {
-    $subcategoryTable.append(`
+const appendSpecification = (specification) => {
+    $specificationTable.append(`
     <tr>
-        <td>${subcategory.id}</td>    
-        <td>${subcategory.name}</td>
-        <td>${subcategory.categoryId}</td>
+        <td>${specification.id}</td>    
+        <td>${specification.name}</td>
+        <td><a class="btn-floating btn-small waves-effect waves-light teal lighten-2">
+                <i data-id="${specification.subcategoriesIds}" data-target="modal_list" class="list-btn list-btn modal-trigger material-icons">menu</i></a></td>
         <td>
             <a class="btn-floating btn-small waves-effect waves-light teal lighten-2">
-                <i data-id="${subcategory.id}" data-target="modal1" class="update-btn modal-trigger material-icons">edit</i></a>
+                <i data-id="${specification.id}" data-target="modal1" class="update-btn modal-trigger material-icons">edit</i></a>
             <a  class="btn-floating btn-small waves-effect waves-light teal lighten-2">
-                <i data-id="${subcategory.id}" data-target="modal_delete" class="delete-btn modal-trigger material-icons">delete_forever</i></a>
+                <i data-id="${specification.id}" data-target="modal_delete" class="delete-btn modal-trigger material-icons">delete_forever</i></a>
         </td>                  
 </tr>`);
 };
 
-const appendSubcategories = (subcategories) => {
-    for (const subcategory of subcategories) {
-        appendSubcategory(subcategory);
+const appendSpecifications = (specifications) => {
+    for (const specification of specifications) {
+        appendSpecification(specification);
     }
 };
 
-const getAllSubcategories = () => {
+const getAllSpecification = () => {
     $.ajax({
-        url: `${HOST}/subcategory/pages?page=${page}&size=${pageSize}`,
+        url: `${HOST}/specification/pages?page=${page}&size=${pageSize}`,
         ...get,
     })
 };
 //--------------------------------------------------------------------------------------------------
-// form select categories
-const getCategories = () => {
+// form subcategories list for table
+
+const clickOnListButton = () => {
+    $('.list-btn').click( e => {
+        $subcategoryList.html('');
+        $.ajax({
+            url: `${HOST}/subcategory/byIds/` + e.target.getAttribute('data-id'),
+            type: 'GET',
+            success: res => {
+                $subcategoryList.append(`<li class="collection-header"><h5>Subcategories List:</h5></li>`);
+                for (let subcategory of res) {
+                    $subcategoryList.append(`<li class="collection-item">${subcategory.name}</li>`);
+                }
+            }
+        })
+    })
+};
+//--------------------------------------------------------------------------------------------------
+// form select subcategories
+const getSubcategories = () => {
     $.ajax({
-        url: `${HOST}/category`,
+        url: `${HOST}/subcategory`,
         type: 'GET',
         success: res => {
-            $categorySelects.formSelect().html(`<option disabled selected>Choose category</option>`);
-            for (const category of res) {
-                $categorySelects.append(`<option value="${category.id}">${category.name}</option>`);
+            $subcategorySelectFilter.formSelect().html(`<option disabled selected>Choose subcategory</option>`);
+            $subcategorySelectCreate.formSelect().html(`<option disabled >Choose subcategory</option>`);
+            for (const subcategory of res) {
+                $subcategorySelects.append(`<option value="${subcategory.id}">${subcategory.name}</option>`);
             }
-            $categorySelects.formSelect();
+            $subcategorySelects.formSelect();
         },
         ...error
     });
 };
 //---------------------------------------------------------------------------------------------------
-//sorting subcategories
+//sorting specifications
 const getSortedBy = field => {
     $.ajax({
-        url: `${HOST}/subcategory/pages?page=${page}&size=${pageSize}&direction=${asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
+        url: `${HOST}/specification/pages?page=${page}&size=${pageSize}&direction=${asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
         ...get,
     });
 };
@@ -104,49 +126,49 @@ const clickOnSort = _ => {
     });
 };
 //-----------------------------------------------------------------------------------------------------
-//creating subcategory
+//creating specification
 $createButton.click( e => {
     $.ajax({
-        url: `${HOST}/subcategory`,
+        url: `${HOST}/specification`,
         type: 'POST',
         data: JSON.stringify({
             name: $nameInput.val(),
-            categoryId: $categorySelectCreate.val()
+            subcategoriesIds: $subcategorySelectCreate.val()
         }),
         contentType: 'application/json',
         success: res => {
             $nameInput.val('');
-            $categorySelectCreate.val('<option disabled selected>Choose category</option>');
-            getAllSubcategories();
+            $subcategorySelectCreate.val('<option disabled selected>Choose category</option>');
+            getAllSpecification();
         },
         ...error
     });
 });
 
 $openCreateForm.click( e => {
-    $modalName.text('Create Subcategory:');
+    $modalName.text('Create Specification:');
     $nameInput.val('');
-    getCategories();
+    getSubcategories();
     $modalFooter.hide();
     $createButton.show();
 });
 //----------------------------------------------------------------------------------------------
-//updating subcategory
+//updating specifications
 const clickOnUpdateButton = () => {
     $('.update-btn').click( e => {
         let id = e.target.getAttribute('data-id');
-        $modalName.text('Subcategory id: ' + id);
+        $modalName.text('Specification id: ' + id);
         initUpdateForm(id);
     })
 };
 
 const initUpdateForm = (id) => {
     $.ajax({
-        url: `${HOST}/subcategory/one/` + id,
+        url: `${HOST}/specification/one/` + id,
         type: 'GET',
         success: res => {
             $nameInput.val(res.name).focus();
-            $categorySelectCreate.val(res.categoryId).formSelect();
+            $subcategorySelectCreate.val(res.subcategoriesIds).formSelect();
             $createButton.hide();
             $modalFooter.show();
             $update.attr('data-id', id);
@@ -156,25 +178,25 @@ const initUpdateForm = (id) => {
 
 $update.click( e => {
     $.ajax({
-        url: `${HOST}/subcategory?id=` + $update.attr('data-id'),
+        url: `${HOST}/specification?id=` + $update.attr('data-id'),
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({name: $nameInput.val(),
-            categoryId: $categorySelectCreate.val()}),
+            subcategoriesIds: $subcategorySelectCreate.val()}),
         success: res => {
-            getAllSubcategories();
+            getAllSpecification();
         },
         ...error
     });
 });
 //------------------------------------------------------------------------------------------------------------------
-//delete subcategories
+//delete specification
 const deleteRequest = id => {
     $.ajax({
-        url: `${HOST}/subcategory?id=` + id,
+        url: `${HOST}/specification?id=` + id,
         type: 'DELETE',
         success: res => {
-            getAllSubcategories();
+            getAllSpecification();
         },
         ...error
     });
@@ -183,7 +205,7 @@ const deleteRequest = id => {
 const clickOnDeleteButton = _ => {
     $('.delete-btn').on('click', e => {
         let id = e.target.getAttribute('data-id');
-        $('#delete-text').text('Do you want to delete subcategory with id: ' + id + ' ?');
+        $('#delete-text').text('Do you want to delete specification with id: ' + id + ' ?');
         confirmDelete(id);
     });
 };
@@ -197,27 +219,37 @@ const confirmDelete = (id) => {
 //filter-----------
 const findByName = () => {
     $.ajax({
-        url: `${HOST}/subcategory/byName?value=${filterName}&page=${page}&size=${pageSize}`,
+        url: `${HOST}/specification/byName?value=${filterName}&page=${page}&size=${pageSize}`,
         ...get
     });
 };
 
-const findByCategory = () => {
+const findBySubcategory = () => {
+    $specificationTable.html('');
     $.ajax({
-        url: `${HOST}/subcategory/byCategoryId/${$categorySelectFilter.val()}?page=${page}&size=${pageSize}`,
-        ...get
+        url: `${HOST}/specification/bySubcategory/${$subcategorySelectFilter.val()}`,
+        // ...get
+        type: 'GET',
+        success: res => {
+            $pagination.html('');
+            appendSpecifications(res);
+            clickOnUpdateButton();
+            clickOnDeleteButton();
+            clickOnSort();
+            clickOnListButton();
+        },
+        ...error
     });
 };
 
-const onCategorySelect = () => {
-    choice = 'category';
-    findByCategory();
+const onSubcategorySelect = () => {
+    findBySubcategory();
 };
 
 $nameSearch.keyup( e => {
     choice = 'filter';
-    getCategories();
-    $subcategoryTable.html('');
+    getSubcategories();
+    $specificationTable.html('');
     filterName = e.target.value;
     findByName();
 });
@@ -242,24 +274,19 @@ $pagination.on('click',e => {
     if (page >= 0 && page < pages ) {
         switch (choice) {
             case 'all':
-                getAllSubcategories();
-                console.log('all');
+                getAllSpecification();
                 break;
             case 'filter':
                 findByName();
                 break;
-            case 'category':
-                findByCategory();
-                break;
             case sortedField:
                 getSortedBy(sortedField);
-                console.log(sortedField);
                 break;
         }
     }
 });
 
 
-getAllSubcategories();
-getCategories();
-$categorySelectFilter.change(onCategorySelect);
+getAllSpecification();
+getSubcategories();
+$subcategorySelectFilter.change(onSubcategorySelect);

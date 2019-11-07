@@ -25,4 +25,9 @@ public class HtmlPagesController {
     public String delivery() {
         return "admin-delivery.html";
     }
+
+    @RequestMapping("admin-specification")
+    public String specification() {
+        return "admin-specification.html";
+    }
 }

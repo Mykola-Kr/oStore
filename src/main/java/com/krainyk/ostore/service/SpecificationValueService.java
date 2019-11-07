@@ -1,12 +1,17 @@
 package com.krainyk.ostore.service;
 
 import com.krainyk.ostore.dto.request.SpecificationValueRequest;
+import com.krainyk.ostore.dto.respond.PageRespond;
+import com.krainyk.ostore.dto.respond.SpecificationRespond;
 import com.krainyk.ostore.dto.respond.SpecificationValueRespond;
+import com.krainyk.ostore.entity.Specification;
 import com.krainyk.ostore.entity.SpecificationValue;
 import com.krainyk.ostore.exceptions.HasDependenciesException;
 import com.krainyk.ostore.exceptions.NoMatchesException;
 import com.krainyk.ostore.repository.SpecificationValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -47,6 +52,7 @@ public class SpecificationValueService {
         return specificationValueRepository.findAll(Sort.by(direction, fieldName)).stream()
                 .map(SpecificationValueRespond::new).collect(Collectors.toList());
     }
+
 
     public void delete(Long id) {
         SpecificationValue specificationValue = findOne(id);

@@ -24,6 +24,11 @@ public class SubcategoryController {
         return subcategoryService.findAll(direction, fieldName);
     }
 
+    @GetMapping("/byIds/{ids}")
+    public List<SubcategoryRespond> findAllByListIds(@PathVariable List<Long> ids) {
+        return subcategoryService.findAllByIds(ids);
+    }
+
     @GetMapping("/pages")
     public PageRespond<SubcategoryRespond> findPage(
             @RequestParam Integer page,

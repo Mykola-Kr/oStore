@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,6 +86,11 @@ public class SubcategoryService {
         Page<Subcategory> data = subcategoryRepository.findAllByNameLike('%' + value + '%',
                                                             PageRequest.of(page, size, direction, fieldName));
         return pageToPageRespond(data);
+    }
+
+    public List<SubcategoryRespond> findAllByIds(List<Long> ids) {
+        List<SubcategoryRespond> subcategoryResponds = ids.stream().map(this::findOneRespond).collect(Collectors.toList());
+        return subcategoryResponds;
     }
 
     public SubcategoryRespond findOneRespond(Long id) {
