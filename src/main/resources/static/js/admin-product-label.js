@@ -1,28 +1,12 @@
 const HOST = 'http://localhost:8080';
-const $categoryTable = $('#categories');
+const $productLabelTable = $('#product_label');
 const $createButton = $('#submit-btn');
 const $nameInput = $('#icon_name_create');
 const $openCreateForm = $('#open_create_form');
 const $update = $('#update');
 const $modalName = $('#modal_header');
 const $modalFooter = $('#footer');
-var $asc = true;
-
-// creating table
-const appendCategory = (category) => {
-    $categoryTable.append(`
-        <tr>
-            <td>${category.id}</td>
-            <td>${category.name}</td>
-            <td>
-                <a class="btn-floating btn-small waves-effect waves-light teal lighten-2">
-                    <i data-id="${category.id}" data-target="modal1" class="update-btn modal-trigger material-icons">edit</i></a>
-                <a  class="btn-floating btn-small waves-effect waves-light teal lighten-2">
-                    <i data-id="${category.id}" data-target="modal2" class="delete-btn modal-trigger material-icons">delete_forever</i></a>
-            </td>             
-        </tr>
-    `)
-};
+let asc = true;
 
 const error = {
     error: err => {
@@ -34,31 +18,47 @@ const error = {
 const get = {
     type: 'GET',
     success: res => {
-        $categoryTable.html('');
-        appendCategories(res);
-        clickOnSort();
-        clickOnDeleteButton();
+        $productLabelTable.html('');
+        appendProductLabels(res);
         clickOnUpdateButton();
+        clickOnDeleteButton();
+        clickOnSort();
     },
     ...error
 };
 
-const appendCategories = (categories) => {
-    for (const category of categories) {
-        appendCategory(category);
+//creating table
+const appendProductLabel = (productLabel) => {
+    $productLabelTable.append(`
+    <tr>
+        <td>${productLabel.id}</td>    
+        <td>${productLabel.name}</td>
+        <td>
+            <a class="btn-floating btn-small waves-effect waves-light teal lighten-2">
+                <i data-id="${productLabel.id}" data-target="modal1" class="update-btn modal-trigger material-icons">edit</i></a>
+            <a  class="btn-floating btn-small waves-effect waves-light teal lighten-2">
+                <i data-id="${productLabel.id}" data-target="modal_delete" class="delete-btn modal-trigger material-icons">delete_forever</i></a>
+        </td>                  
+</tr>`);
+};
+
+const appendProductLabels = (productLabels) => {
+    for (const productLabel of productLabels) {
+        appendProductLabel(productLabel);
     }
 };
 
-const getAllCategories = () => {
+const getAllProductLabels = () => {
     $.ajax({
-        url: `${HOST}/category`,
-        ...get
-    });
+        url: `${HOST}/productLabel`,
+        ...get,
+    })
 };
-//sorting category
+
+//sorting productLabel
 const getSortedBy = field => {
     $.ajax({
-        url: `${HOST}/category?direction=${$asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
+        url: `${HOST}/productLabel?direction=${asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
         ...get
     });
 };
@@ -66,48 +66,49 @@ const getSortedBy = field => {
 const clickOnSort = _ => {
     $('.sort').off().on('click', e => {
         let field = e.target.getAttribute('data-id');
+        asc = !asc;
         getSortedBy(field);
-        $asc = !$asc;
     });
 };
 //---------------------------------------------------------------------------------------------------------------
-// creating new category
+// creating new productLabel
 $createButton.click( e => {
+    console.log($nameInput.val());
     const request = {
         name: $nameInput.val()
     };
     $.ajax({
-        url: `${HOST}/category`,
+        url: `${HOST}/productLabel`,
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(request),
         success: res => {
             $nameInput.val('');
-            getAllCategories();
+            getAllProductLabels();
         },
         ...error
     });
 });
 
 $openCreateForm.click( () => {
-    $modalName.text('Create category');
+    $modalName.text('Create product label');
     $nameInput.val('');
     $modalFooter.hide();
     $createButton.show();
 });
 //------------------------------------------------------------------------------------------------------
-//updating category
+//updating productLabels
 const clickOnUpdateButton = _ => {
     $('.update-btn').click( e => {
         let id = e.target.getAttribute('data-id');
-        $modalName.text('Category id: ' + id);
+        $modalName.text('Product Label id: ' + id);
         initUpdateForm(id);
     })
 };
 
 const initUpdateForm = (id) => {
     $.ajax({
-        url: `${HOST}/category/one/` + id,
+        url: `${HOST}/productLabel/one/` + id,
         type: 'GET',
         success: res => {
             $nameInput.val(res.name).focus();
@@ -120,27 +121,27 @@ const initUpdateForm = (id) => {
 
 $update.click( e => {
     $.ajax({
-        url: `${HOST}/category?id=` + $update.attr('data-id'),
+        url: `${HOST}/productLabel?id=` + $update.attr('data-id'),
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({
             name: $nameInput.val()
         }),
         success: res => {
-            getAllCategories();
+            getAllProductLabels();
         },
         ...error
     });
 });
 //--------------------------------------------------------------------------------------------------
 
-//delete category
+//delete productLabel
 const deleteRequest = id => {
     $.ajax({
-        url: `${HOST}/category?id=` + id,
+        url: `${HOST}/productLabel?id=` + id,
         type: 'DELETE',
         success: res => {
-            getAllCategories();
+            getAllProductLabels();
         },
         ...error
     });
@@ -149,7 +150,7 @@ const deleteRequest = id => {
 const clickOnDeleteButton = _ => {
     $('.delete-btn').on('click', e => {
         let id = e.target.getAttribute('data-id');
-        $('#modal-delete').text('Do you want to delete category with id: ' + id + ' ?');
+        $('#delete-text').text('Do you want to delete Product Label with id: ' + id + ' ?');
         confirmDelete(id);
     });
 };
@@ -160,8 +161,4 @@ const confirmDelete = (id) => {
     });
 };
 //-----------------------------------------------------------------------------------------------------------
-$(document).ready(function(){
-    $('.modal').modal();
-});
-
-getAllCategories();
+getAllProductLabels();

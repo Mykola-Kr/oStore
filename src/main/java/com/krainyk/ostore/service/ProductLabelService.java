@@ -47,8 +47,12 @@ public class ProductLabelService {
         }
     }
 
-    public List<ProductLabelRespond> findAll(String fieldName) {
-        return productLabelRepository.findAll(Sort.by(fieldName)).stream().map(ProductLabelRespond::new).collect(Collectors.toList());
+    public List<ProductLabelRespond> findAll(Sort.Direction direction, String fieldName) {
+        return productLabelRepository.findAll(Sort.by(direction, fieldName)).stream().map(ProductLabelRespond::new).collect(Collectors.toList());
+    }
+
+    public ProductLabelRespond findOneRespond(Long id) {
+        return new ProductLabelRespond(findOne(id));
     }
 
 }

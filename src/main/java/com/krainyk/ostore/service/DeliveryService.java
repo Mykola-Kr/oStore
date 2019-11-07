@@ -49,4 +49,8 @@ public class DeliveryService {
                                 .map(DeliveryRespond::new)
                                 .collect(Collectors.toList());
     }
+
+    public DeliveryRespond findOneRespond(Long id) {
+        return new DeliveryRespond(findOne(id));
+    }
 }

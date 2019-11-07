@@ -4,6 +4,7 @@ import com.krainyk.ostore.dto.request.ProductLabelRequest;
 import com.krainyk.ostore.dto.respond.ProductLabelRespond;
 import com.krainyk.ostore.service.ProductLabelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
@@ -17,8 +18,14 @@ public class ProductLabelController {
     private ProductLabelService productLabelService;
 
     @GetMapping
-    public List<ProductLabelRespond> findAll(@RequestParam(defaultValue = "id") String fieldName) {
-        return productLabelService.findAll(fieldName);
+    public List<ProductLabelRespond> findAll(@RequestParam(defaultValue = "ASC") Sort.Direction direction,
+                                             @RequestParam(defaultValue = "id") String fieldName) {
+        return productLabelService.findAll(direction, fieldName);
+    }
+
+    @GetMapping("/one/{id}")
+    public ProductLabelRespond findOne(@PathVariable Long id) {
+        return productLabelService.findOneRespond(id);
     }
 
     @PostMapping

@@ -15,4 +15,14 @@ public class HtmlPagesController {
     public String subcategory() {
         return "admin-subcategory.html";
     }
+
+    @RequestMapping("admin-product-label")
+    public String productLabel() {
+        return "admin-product-label.html";
+    }
+
+    @RequestMapping("admin-delivery")
+    public String delivery() {
+        return "admin-delivery.html";
+    }
 }

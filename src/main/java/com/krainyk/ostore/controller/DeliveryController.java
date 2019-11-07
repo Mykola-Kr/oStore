@@ -24,6 +24,11 @@ public class DeliveryController {
         return deliveryService.findAll(direction, fieldName);
     }
 
+    @GetMapping("/one/{id}")
+    public DeliveryRespond findOne(@PathVariable Long id) {
+        return deliveryService.findOneRespond(id);
+    }
+
     @PostMapping
     public void create(@Valid @RequestBody DeliveryRequest request) {
         deliveryService.create(request);

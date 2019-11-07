@@ -37,8 +37,8 @@
                             <li><a href="admin-specification.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification</a></li>
                             <li><a href="admin-specification-value.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification value</a></li>
                             <li><a href="admin-product-label.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">product label</a></li>
-                            <li><a href="admin-delivery" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery</a></li>
-                            <li><a href="admin-delivery-status" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery status</a></li>
+                            <li><a href="admin-delivery.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery</a></li>
+                            <li><a href="admin-delivery-status.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery status</a></li>
                         </ul>
                     </div>
                 </li>
@@ -95,8 +95,8 @@
             <form class="col s12">
                 <div class="input-field col s9">
                     <input  id="icon_name_create" type="text">
-                    <button id="submit-btn" class="waves-effect waves-light btn-small">SUBMIT</button>
                     <label for="icon_name_create">Name</label>
+                    <button id="submit-btn" class="waves-effect waves-light btn-small">SUBMIT</button>
                 </div>
             </form>
         </div>
@@ -107,9 +107,9 @@
     </div>
     <!------------------------------------------------------------------------>
     <!--modal window for delete confirmation-->
-    <div id="modal-delete" class="modal">
+    <div id="modal2" class="modal">
         <div class="modal-content">
-            <h6 id="modal2-id">Category id: </h6>
+            <h6 id="delete-text">Category id: </h6>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="cancel-delete">Cancel</a>
@@ -124,7 +124,7 @@
         crossorigin="anonymous"></script>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="admin-category.js"></script>
+<script src="js/admin-category.js"></script>
 
 <script>
     $(document).ready(function () {
