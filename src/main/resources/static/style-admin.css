@@ -14,6 +14,9 @@ nav{
 .filter-div{
     height: 500px;
 }
+.pagination li.active {
+    background-color: #4db6ac;
+}
 #dashboard{
     margin-left: 15px;
 }

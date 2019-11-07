@@ -10,8 +10,14 @@ const $update = $('#update');
 const $modalName = $('#modal_header');
 const $modalFooter = $('#footer');
 const $nameSearch = $('#name_search');
-var $asc = true;
-var $page = 0;
+const $pagination = $('.pagination');
+let sortedFild = 'name';
+let filterName = '';
+let choice = 'all';
+let asc = true;
+let pageSize = 10;
+let page = 0;
+let pages = 0;
 
 const error = {
     error: err => {
@@ -23,11 +29,14 @@ const error = {
 const get = {
     type: 'GET',
     success: res => {
+        $pagination.html('');
         $subcategoryTable.html('');
         appendSubcategories(res.data);
         clickOnUpdateButton();
         clickOnDeleteButton();
         clickOnSort();
+        appendPages(res.totalPages, +page + 1);
+        pages = res.totalPages;
     },
     ...error
 };
@@ -56,8 +65,8 @@ const appendSubcategories = (subcategories) => {
 
 const getAllSubcategories = () => {
     $.ajax({
-        url: `${HOST}/subcategory/pages?page=${$page}&size=2`,
-        ...get
+        url: `${HOST}/subcategory/pages?page=${page}&size=${pageSize}`,
+        ...get,
     })
 };
 //--------------------------------------------------------------------------------------------------
@@ -80,16 +89,18 @@ const getCategories = () => {
 //sorting subcategories
 const getSortedBy = field => {
     $.ajax({
-        url: `${HOST}/subcategory/pages?page=0&size=10&direction=${$asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
-        ...get
+        url: `${HOST}/subcategory/pages?page=${page}&size=${pageSize}&direction=${asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
+        ...get,
     });
 };
 
 const clickOnSort = _ => {
     $('.sort').off().on('click', e => {
-        let field = e.target.getAttribute('data-id');
-        getSortedBy(field);
-        $asc = !$asc;
+        sortedFild = e.target.getAttribute('data-id');
+        choice = sortedFild;
+        console.log(choice);
+        asc = !asc;
+        getSortedBy(sortedFild);
     });
 };
 //-----------------------------------------------------------------------------------------------------
@@ -184,35 +195,70 @@ const confirmDelete = (id) => {
 };
 //---------------------------------------------------------------------------------------------
 //filter-----------
-const onCategorySelect = () => {
+const findByName = () => {
     $.ajax({
-        url: `${HOST}/subcategory/byCategoryId/${$categorySelectFilter.val()}?page=0&size=10`,
+        url: `${HOST}/subcategory/byName?value=${filterName}&page=${page}&size=${pageSize}`,
         ...get
-    })
+    });
+};
+
+const findByCategory = () => {
+    $.ajax({
+        url: `${HOST}/subcategory/byCategoryId/${$categorySelectFilter.val()}?page=${page}&size=${pageSize}`,
+        ...get
+    });
+};
+
+const onCategorySelect = () => {
+    choice = 'category';
+    findByCategory();
 };
 
 $nameSearch.keyup( e => {
+    choice = 'filter';
     $subcategoryTable.html('');
-    $.ajax({
-        url: `${HOST}/subcategory/byName?value=${e.target.value}&page=0&size=10`,
-        ...get
-    })
+    filterName = e.target.value;
+    findByName();
 });
 //---------------------------------------------------------------------------------------------------
+
+// pagination-------------------------------------
+const appendPages =(number, selectedPage) => {
+    $pagination.append(`<li class="waves-effect"><a data-id="${selectedPage} href="#!"><i data-id="${selectedPage-2}" class="material-icons">chevron_left</i></a></li>`);
+    for (i = 1; i<= number; i++) {
+        if (i == selectedPage) {
+            $pagination.append(`<li class="active"><a data-id="${i-1}" class="page" href="#!">${i}</a></li>`)
+        } else {
+            $pagination.append(`<li class="waves-effect"><a data-id="${i-1}" class="page" href="#!">${i}</a></li>`)
+        }
+    }
+    $pagination.append(`<li class="waves-effect" ><a data-id="${selectedPage} href="#!"><i data-id="${selectedPage}" class="material-icons">chevron_right</i></a></li>`)
+};
+
+$pagination.on('click',e => {
+    page = e.target.getAttribute('data-id');
+    console.log('hi');
+    if (page >= 0 && page < pages ) {
+        switch (choice) {
+            case 'all':
+                getAllSubcategories();
+                console.log('all');
+                break;
+            case 'filter':
+                findByName();
+                break;
+            case 'category':
+                findByCategory();
+                break;
+            case sortedFild:
+                getSortedBy(sortedFild);
+                console.log(sortedFild);
+                break;
+        }
+    }
+});
+
 
 getAllSubcategories();
 getCategories();
 $categorySelectFilter.change(onCategorySelect);
-$(function() {
-    $('#pagination-long').materializePagination({
-        align: 'center',
-        lastPage: 10,
-        firstPage: 1,
-        useUrlParameter: false,
-        onClickCallback: function(requestedPage) {
-            console.log('Requested page from #pagination-long: ' + requestedPage);
-            $page = requestedPage-1;
-            getAllSubcategories();
-        }
-    });
-});
