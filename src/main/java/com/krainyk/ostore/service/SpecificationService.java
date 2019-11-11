@@ -1,5 +1,6 @@
 package com.krainyk.ostore.service;
 
+import com.krainyk.ostore.dto.request.PaginationRequest;
 import com.krainyk.ostore.dto.request.SpecificationRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
 import com.krainyk.ostore.dto.respond.SpecificationRespond;
@@ -66,15 +67,13 @@ public class SpecificationService {
         return new PageRespond<>(data.getTotalElements(), data.getTotalPages(), respondList);
     }
 
-    public PageRespond<SpecificationRespond> findSpecificationPage(Integer page, Integer size, Sort.Direction direction, String fieldName) {
-        Page<Specification> data = specificationRepository.findAll(PageRequest.of(page, size, direction, fieldName));
+    public PageRespond<SpecificationRespond> findSpecificationPage(PaginationRequest request) {
+        Page<Specification> data = specificationRepository.findAll(request.toPageable());
         return pageToPageRespond(data);
     }
 
-    public PageRespond<SpecificationRespond> findAllByName(
-            String value, Integer page, Integer size, Sort.Direction direction, String fieldName) {
-        Page<Specification> data = specificationRepository.findAllByNameLike('%' + value + '%',
-                PageRequest.of(page, size, direction, fieldName));
+    public PageRespond<SpecificationRespond> findAllByName(String value, PaginationRequest request) {
+        Page<Specification> data = specificationRepository.findAllByNameLike('%' + value + '%', request.toPageable());
         return pageToPageRespond(data);
     }
 

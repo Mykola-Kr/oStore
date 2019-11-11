@@ -1,5 +1,6 @@
 package com.krainyk.ostore.controller;
 
+import com.krainyk.ostore.dto.request.PaginationRequest;
 import com.krainyk.ostore.dto.request.ProductRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
 import com.krainyk.ostore.dto.respond.ProductRespond;
@@ -7,6 +8,7 @@ import com.krainyk.ostore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -24,17 +26,18 @@ public class ProductController {
     }
 
     @GetMapping
-    public PageRespond<ProductRespond> findPage(
-            @RequestParam Integer page,
-            @RequestParam Integer size,
-            @RequestParam(defaultValue = "name") String fieldName,
-            @RequestParam(defaultValue = "ASC") Sort.Direction direction) {
-        return productService.findPage(page, size, fieldName, direction);
+    public PageRespond<ProductRespond> findPage(@Valid PaginationRequest request) {
+        return productService.findPage(request);
+    }
+
+    @GetMapping("/byName")
+    public PageRespond<ProductRespond> findByNameLike(String value, @Valid PaginationRequest request) {
+        return productService.findByNameLike(value, request);
     }
 
     @GetMapping("/one/{id}")
     public ProductRespond findOne(@PathVariable Long id) {
-        return productService.findOneResponce(id);
+        return productService.findOneRespond(id);
     }
 
     @PutMapping

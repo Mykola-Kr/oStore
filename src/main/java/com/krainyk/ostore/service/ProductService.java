@@ -1,5 +1,6 @@
 package com.krainyk.ostore.service;
 
+import com.krainyk.ostore.dto.request.PaginationRequest;
 import com.krainyk.ostore.dto.request.ProductRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
 import com.krainyk.ostore.dto.respond.ProductRespond;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -80,13 +82,20 @@ public class ProductService {
     public List<ProductRespond> findAll() {
         return productRepository.findAll().stream().map(ProductRespond::new).collect(Collectors.toList());
     }
+    // changes Page to PageRespond
+    private PageRespond<ProductRespond> pageToPageRespond(Page<Product> data) {
+        List<ProductRespond> respondList = data.get().map(ProductRespond::new).collect(Collectors.toList());
+        return new PageRespond<>(data.getTotalElements(), data.getTotalPages(), respondList);
+    }
 
-    public PageRespond<ProductRespond> findPage(Integer page, Integer size, String fieldName, Sort.Direction direction) {
-        Page<Product> data = productRepository.findAll(PageRequest.of(page, size, direction, fieldName));
-        List<ProductRespond> collect = data.get().map(ProductRespond::new).collect(Collectors.toList());
-        return new PageRespond<>(data.getTotalElements(),
-                data.getTotalPages(),
-                collect);
+    public PageRespond<ProductRespond> findPage(PaginationRequest request) {
+        Page<Product> data = productRepository.findAll(request.toPageable());
+        return pageToPageRespond(data);
+    }
+
+    public PageRespond<ProductRespond> findByNameLike(String value, PaginationRequest request) {
+        Page<Product> data = productRepository.findAllByNameLike('%' + value + '%', request.toPageable());
+        return pageToPageRespond(data);
     }
 
     // setting rating for product after creating comment ???
@@ -100,7 +109,7 @@ public class ProductService {
         productRepository.save(findOne(id));
     }
 
-    public ProductRespond findOneResponce(Long id) {
+    public ProductRespond findOneRespond(Long id) {
         return new ProductRespond(findOne(id));
     }
 }

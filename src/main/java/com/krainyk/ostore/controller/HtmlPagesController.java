@@ -30,4 +30,14 @@ public class HtmlPagesController {
     public String specification() {
         return "admin-specification.html";
     }
+
+    @RequestMapping("admin-specification-value")
+    public String specificationValue() {
+        return "admin-specification-value.html";
+    }
+
+    @RequestMapping("admin-product")
+    public String adminProduct() {
+        return "admin-product.html";
+    }
 }

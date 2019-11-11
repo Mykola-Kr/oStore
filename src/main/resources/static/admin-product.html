@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="style-admin.css">
+    <title>Admin product</title>
+</head>
+<body>
+<header>
+    <!--nav-------------------------------->
+    <nav class="fixes">
+        <div class="nav-wrapper blue-grey darken-1">
+            <a href="#" class="brand-logo">oStore</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">User</a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!----------------------------------------------------------->
+    <!-- sidenav menu--------------------------------------------------->
+    <ul id="catalog" class="sidenav sidenav-fixed invisible-top blue-grey darken-1">
+        <li>
+            <h6 id="dashboard" class="white-text">Dashboard:</h6>
+            <ul id="catalog-ul" class="collapsible">
+                <li>
+                    <a class="collapsible-header white-text">Catalog</a>
+                    <div class="collapsible-body">
+                        <ul id="" class="collection grey lighten-2">
+                            <li><a href="admin-category.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">category</a></li>
+                            <li><a href="admin-subcategory.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">subcategory</a></li>
+                            <li><a href="admin-product.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">product</a></li>
+                            <li><a href="admin-specification.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification</a></li>
+                            <li><a href="admin-specification-value.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification value</a></li>
+                            <li><a href="admin-product-label.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">product label</a></li>
+                            <li><a href="admin-delivery.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery</a></li>
+                            <li><a href="admin-delivery-status.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery status</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a class="collapsible-header white-text">Sales</a>
+                    <div class="collapsible-body">
+                        <ul class="collection grey lighten-2">
+                            <li><a href="admin-order" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">orders</a></li>
+                            <li><a href="admin-order-status" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">order status</a></li>
+                            <li><a href="#" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">returns</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="admin-customers" class="collapsible-header white-text">Customers</a>
+                </li>
+                <li>
+                    <a href="admin-comments" class="collapsible-header white-text">Comments</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!------------------------------------------------------------------>
+</header>
+
+<main>
+    <div class="row">
+        <div class="col l10">
+            <h5>Products</h5>
+        </div>
+        <div class="col l2">
+            <h5><a href="/admin-product" class="btn-floating btn-small waves-effect waves-light teal lighten-2">
+                <i id="reload" class="material-icons">refresh</i></a>
+                <a class="btn-floating btn-small waves-effect waves-light teal lighten-2">
+                    <i id="open_create_form" data-target="modal1" class="modal-trigger material-icons">add</i></a></h5>
+        </div>
+    </div>
+
+    <div class="content row">
+        <div class="col l8 s12">
+            <table class="">
+                <thead>
+                <tr>
+                    <th><a href="#" class="sort " data-id="id">Id</a></th>
+                    <th><a href="#" class="sort " data-id="name">Name</a></th>
+                    <th>Photo</th>
+                    <th><p data-id="subcategoryIds">Subcategories List</p></th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody id="products">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="filter-div col l4 s12 grey lighten-3">
+            <h5 class="center">Filter</h5>
+            <br>
+            <div class="input-field col s12">
+                <input id="name_search" type="text">
+                <label for="name_search">Find by name</label>
+            </div>
+            <div class="input-field col s12">
+                <select id="subcategory_filter_select" class="subcategory_select">
+                    <!--<option value="" disabled selected>Choose category</option>-->
+                </select>
+                <label>Select subcategory</label>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="center">
+        <ul class="pagination indigo-text"></ul>
+    </div>
+
+    <!-- Modal Structure for update------------------------------------------>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h6 id="modal_header">Specification id: </h6><br>
+            <form class="col s12">
+                <div class="input-field col s9">
+                    <input  id="icon_name_create" type="text">
+                    <label for="icon_name_create">Name</label>
+                </div>
+                <div class="input-field col s9">
+                    <select multiple id="create_form_subcategory_select" class="subcategory_select">
+                        <option value="" disabled selected>Choose subcategory</option>
+                    </select>
+                    <label for="create_form_subcategory_select">Choose subcategories</label>
+                </div>
+                <div class="col s9">
+                    <button id="submit-btn" class="waves-effect waves-light btn-small">SUBMIT</button>
+                </div>
+            </form>
+        </div>
+        <div id="footer" class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="cancel">Cancel</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="update">Update</a>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------>
+    <!--modal window for delete confirmation-->
+    <div id="modal_delete" class="modal">
+        <div class="modal-content">
+            <h6 id="delete-text">blablabla </h6>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="cancel-delete">Cancel</a>
+            <button href="#!" class="modal-close waves-effect waves-green btn-flat" id="delete">Confirm</button>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------>
+    <!--modal window for subcategories list-->
+    <div class="modal" id="modal_list">
+        <div class="modal-content">
+            <ul id="subcategories_names" class="collection with-header">
+                <li class="collection-header"><h5>Subcategories List:</h5></li>
+            </ul>
+        </div>
+    </div>
+
+
+</main>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="js/admin-product.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.sidenav').sidenav();
+        $('select').formSelect();
+        $('.modal').modal();
+    });
+</script>
+</body>
+</html>

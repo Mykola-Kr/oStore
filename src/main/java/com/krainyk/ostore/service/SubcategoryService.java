@@ -1,5 +1,6 @@
 package com.krainyk.ostore.service;
 
+import com.krainyk.ostore.dto.request.PaginationRequest;
 import com.krainyk.ostore.dto.request.SubcategoryRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
 import com.krainyk.ostore.dto.respond.SubcategoryRespond;
@@ -13,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,27 +70,30 @@ public class SubcategoryService {
         return new PageRespond<>(data.getTotalElements(), data.getTotalPages(), respondList);
     }
 
-    public PageRespond<SubcategoryRespond> findSubcategoryPage(Integer page, Integer size, Sort.Direction direction, String fieldName) {
-        Page<Subcategory> data = subcategoryRepository.findAll(PageRequest.of(page, size, direction, fieldName));
+//    public PageRespond<SubcategoryRespond> findSubcategoryPage(Integer page, Integer size, Sort.Direction direction, String fieldName) {
+//        Page<Subcategory> data = subcategoryRepository.findAll(PageRequest.of(page, size, direction, fieldName));
+//        return pageToPageRespond(data);
+//    }
+
+    public PageRespond<SubcategoryRespond> findSubcategoryPage(PaginationRequest request) {
+        Page<Subcategory> data = subcategoryRepository.findAll(request.toPageable());
         return pageToPageRespond(data);
     }
+
 
     public PageRespond<SubcategoryRespond> findAllByCategoryId(
-            Long id, Integer page, Integer size, Sort.Direction direction, String fieldName) {
-        Page<Subcategory> data = subcategoryRepository.findAllByCategory_Id(id, PageRequest.of(page, size, direction, fieldName));
+            Long id, PaginationRequest request) {
+        Page<Subcategory> data = subcategoryRepository.findAllByCategory_Id(id, request.toPageable());
         return pageToPageRespond(data);
     }
 
-    public PageRespond<SubcategoryRespond> findAllByName(
-            String value, Integer page, Integer size, Sort.Direction direction, String fieldName) {
-        Page<Subcategory> data = subcategoryRepository.findAllByNameLike('%' + value + '%',
-                                                            PageRequest.of(page, size, direction, fieldName));
+    public PageRespond<SubcategoryRespond> findAllByName(String value, PaginationRequest request) {
+        Page<Subcategory> data = subcategoryRepository.findAllByNameLike('%' + value + '%', request.toPageable());
         return pageToPageRespond(data);
     }
 
     public List<SubcategoryRespond> findAllByIds(List<Long> ids) {
-        List<SubcategoryRespond> subcategoryResponds = ids.stream().map(this::findOneRespond).collect(Collectors.toList());
-        return subcategoryResponds;
+        return ids.stream().map(this::findOneRespond).collect(Collectors.toList());
     }
 
     public SubcategoryRespond findOneRespond(Long id) {

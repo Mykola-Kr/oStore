@@ -1,5 +1,6 @@
 package com.krainyk.ostore.controller;
 
+import com.krainyk.ostore.dto.request.PaginationRequest;
 import com.krainyk.ostore.dto.request.SubcategoryRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
 import com.krainyk.ostore.dto.respond.SubcategoryRespond;
@@ -29,33 +30,28 @@ public class SubcategoryController {
         return subcategoryService.findAllByIds(ids);
     }
 
+//    @GetMapping("/pages")
+//    public PageRespond<SubcategoryRespond> findPage(
+//            @RequestParam Integer page,
+//            @RequestParam Integer size,
+//            @RequestParam(defaultValue = "ASC") Sort.Direction direction,
+//            @RequestParam(defaultValue = "name") String fieldName) {
+//        return subcategoryService.findSubcategoryPage(page, size, direction, fieldName);
+//    }
+
     @GetMapping("/pages")
-    public PageRespond<SubcategoryRespond> findPage(
-            @RequestParam Integer page,
-            @RequestParam Integer size,
-            @RequestParam(defaultValue = "ASC") Sort.Direction direction,
-            @RequestParam(defaultValue = "name") String fieldName) {
-        return subcategoryService.findSubcategoryPage(page, size, direction, fieldName);
+    public PageRespond<SubcategoryRespond> findPage(@Valid PaginationRequest request) {
+        return subcategoryService.findSubcategoryPage(request);
     }
 
     @GetMapping("/byCategoryId/{id}")
-    public PageRespond<SubcategoryRespond> findAllByCategoryId(
-            @PathVariable Long id,
-            @RequestParam Integer page,
-            @RequestParam Integer size,
-            @RequestParam(defaultValue = "ASC") Sort.Direction direction,
-            @RequestParam(defaultValue = "name") String fieldName) {
-        return subcategoryService.findAllByCategoryId(id, page, size, direction, fieldName);
+    public PageRespond<SubcategoryRespond> findAllByCategoryId(@PathVariable Long id, @Valid PaginationRequest request) {
+        return subcategoryService.findAllByCategoryId(id, request);
     }
 
     @GetMapping("/byName")
-    public PageRespond<SubcategoryRespond> findAllByNameLike(
-            String value,
-            @RequestParam Integer page,
-            @RequestParam Integer size,
-            @RequestParam(defaultValue = "ASC") Sort.Direction direction,
-            @RequestParam(defaultValue = "name") String fieldName) {
-        return subcategoryService.findAllByName(value, page, size, direction, fieldName);
+    public PageRespond<SubcategoryRespond> findAllByNameLike(String value, @Valid PaginationRequest request) {
+        return subcategoryService.findAllByName(value, request);
     }
 
     @GetMapping("/one/{id}")
