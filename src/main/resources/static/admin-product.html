@@ -7,6 +7,11 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="style-admin.css">
+    <style>
+        .filter-div{
+            height: 700px;
+        }
+    </style>
     <title>Admin product</title>
 </head>
 <body>
@@ -76,7 +81,7 @@
                     <i id="open_create_form" data-target="modal1" class="modal-trigger material-icons">add</i></a></h5>
         </div>
     </div>
-
+<!-- product table-->
     <div class="content row">
         <div class="col l8 s12">
             <table class="">
@@ -84,8 +89,9 @@
                 <tr>
                     <th><a href="#" class="sort " data-id="id">Id</a></th>
                     <th><a href="#" class="sort " data-id="name">Name</a></th>
+                    <th><a href="#" class="sort " data-id="price">Price</a></th>
+                    <th><a href="#" class="sort " data-id="quantity">Quantity</a></th>
                     <th>Photo</th>
-                    <th><p data-id="subcategoryIds">Subcategories List</p></th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -97,16 +103,47 @@
 
         <div class="filter-div col l4 s12 grey lighten-3">
             <h5 class="center">Filter</h5>
-            <br>
             <div class="input-field col s12">
                 <input id="name_search" type="text">
                 <label for="name_search">Find by name</label>
             </div>
             <div class="input-field col s12">
-                <select id="subcategory_filter_select" class="subcategory_select">
-                    <!--<option value="" disabled selected>Choose category</option>-->
+                <select id="category_filter_select" class="category_select">
+                    <option value="" disabled selected>Choose category</option>
                 </select>
-                <label>Select subcategory</label>
+                <label for="category_filter_select">Category</label>
+            </div>
+            <div class="input-field col s12">
+                <select id="subcategory_filter_select" class="subcategory_select">
+                    <option value="" disabled selected>Choose subcategory</option>
+                </select>
+                <label for="subcategories_names">Subcategory</label>
+            </div>
+            <div class="input-field col s12">
+                <select id="product_label_filter_select" class="product_label_select">
+                    <option disabled selected>Choose label</option>
+                </select>
+                <label for="product_label_filter_select">Product Label</label>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input  id="icon_min_price_filter" type="number" class="price_filter validate">
+                    <label for="icon_min_price_filter">Min Price</label>
+                </div>
+                <div class="input-field col s6">
+                    <input  id="icon_max_price_filter" type="number" class="price_filter validate">
+                    <label for="icon_max_price_filter">Max Price</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input  id="icon_min_quantity_filter" type="number" class="quantity_filter validate">
+                    <label for="icon_min_quantity_filter">Min quantity</label>
+                </div>
+                <div class="input-field col s6">
+                    <input  id="icon_max_quantity_filter" type="number" class="quantity_filter validate">
+                    <label for="icon_max_quantity_filter">Max quantity</label>
+                </div>
             </div>
 
         </div>
@@ -119,22 +156,75 @@
     <!-- Modal Structure for update------------------------------------------>
     <div id="modal1" class="modal">
         <div class="modal-content">
-            <h6 id="modal_header">Specification id: </h6><br>
-            <form class="col s12">
-                <div class="input-field col s9">
-                    <input  id="icon_name_create" type="text">
-                    <label for="icon_name_create">Name</label>
+            <h6 id="modal_header">Product id: </h6><br>
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a href="#main_create" class="active blue-text text-darken-2">Main</a></li>
+                    <li class="tab col s3"><a href="#description_create" class="blue-text text-darken-2">Description</a></li>
+                    <li class="tab col s3"><a href="#specification_create" class="blue-text text-darken-2">Specifications</a></li>
+                </ul>
+            </div>
+            <div id="main_create">
+                <form class="col s12">
+                    <div class="input-field col s12">
+                        <input  id="icon_name_create" type="text">
+                        <label for="icon_name_create">Name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="create_form_category_select" class="category_select">
+                            <option value="" disabled selected>Choose category</option>
+                        </select>
+                        <label for="create_form_category_select">Category</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="create_form_subcategory_select" class="subcategory_select">
+                            <option value="" disabled selected>Choose subcategory</option>
+                        </select>
+                        <label for="create_form_subcategory_select">Subcategory</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="create_form_product_label_select" class="product_label_select">
+                            <option value="" disabled selected>Choose label</option>
+                        </select>
+                        <label for="create_form_product_label_select">Product Label</label>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input  id="icon_price_create" type="number" class="icon_price_create validate">
+                            <label for="icon_price_create">Price</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="icon_quantity_create" type="number" class="icon_quantity_create validate">
+                            <label for="icon_quantity_create">Quantity</label>
+                        </div>
+                    </div>
+                    <div class="file-field input-field col s6">
+                        <div class="btn col s5">
+                            <span>Photo</span>
+                            <i class="material-icons left">add_photo_alternate</i>
+                            <input class="create-form_img-input" type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input  id="file-path" class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    <div class="col s9">
+                        <button id="submit-btn" class="waves-effect waves-light btn-small">SUBMIT</button>
+                    </div>
+                </form>
+            </div>
+            <div id="description_create">
+                <div class="input-field col s12">
+                    <textarea  id="icon_description_create" type="text" class="icon_description_create materialize-textarea"></textarea>
+                    <label for="icon_description_create">Description</label>
                 </div>
-                <div class="input-field col s9">
-                    <select multiple id="create_form_subcategory_select" class="subcategory_select">
-                        <option value="" disabled selected>Choose subcategory</option>
-                    </select>
-                    <label for="create_form_subcategory_select">Choose subcategories</label>
-                </div>
-                <div class="col s9">
-                    <button id="submit-btn" class="waves-effect waves-light btn-small">SUBMIT</button>
-                </div>
-            </form>
+            </div>
+            <div id="specification_create">
+                <h6 id="specification_note">You should select subcategory at first</h6>
+                <form class="col s12" id="specification_selects">
+                </form>
+                <a id="test" class="btn">test</a>
+            </div>
         </div>
         <div id="footer" class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="cancel">Cancel</a>
@@ -153,6 +243,23 @@
         </div>
     </div>
     <!------------------------------------------------------------------------>
+    <!--modal window for product info-->
+    <div class="modal" id="modal_details">
+        <div class="modal-content">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a href="#test1" class="blue-text text-darken-2">Main</a></li>
+                    <li class="tab col s3"><a href="#test2" class="blue-text text-darken-2" >Description</a></li>
+                    <li class="tab col s3"><a href="#test3" class="blue-text text-darken-2">Comments</a></li>
+                    <li class="tab col s3"><a href="#test4" class="blue-text text-darken-2">Specifications</a></li>
+                </ul>
+            </div>
+            <div id="test1" class="col s12">Test 1</div>
+            <div id="test2" class="col s12">Test 2</div>
+            <div id="test3" class="col s12">Test 3</div>
+            <div id="test4" class="col s12">Test 4</div>
+        </div>
+    </div>
     <!--modal window for subcategories list-->
     <div class="modal" id="modal_list">
         <div class="modal-content">
@@ -176,8 +283,9 @@
     $(document).ready(function () {
         $('.collapsible').collapsible();
         $('.sidenav').sidenav();
-        $('select').formSelect();
+        $('.select').formSelect();
         $('.modal').modal();
+        $('.tabs').tabs();
     });
 </script>
 </body>

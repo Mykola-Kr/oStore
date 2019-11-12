@@ -1,6 +1,7 @@
 package com.krainyk.ostore.controller;
 
 import com.krainyk.ostore.dto.request.PaginationRequest;
+import com.krainyk.ostore.dto.request.ProductCriteriaRequest;
 import com.krainyk.ostore.dto.request.ProductRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
 import com.krainyk.ostore.dto.respond.ProductRespond;
@@ -33,6 +34,11 @@ public class ProductController {
     @GetMapping("/byName")
     public PageRespond<ProductRespond> findByNameLike(String value, @Valid PaginationRequest request) {
         return productService.findByNameLike(value, request);
+    }
+
+    @GetMapping("byCriteria")
+    public PageRespond<ProductRespond> findByCriteria(ProductCriteriaRequest request, @Valid PaginationRequest paginationRequest) {
+        return productService.findByCriteria(request, paginationRequest);
     }
 
     @GetMapping("/one/{id}")

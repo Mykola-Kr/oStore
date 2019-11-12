@@ -17,6 +17,12 @@ nav{
 .pagination li.active {
     background-color: #4db6ac;
 }
+.tabs .indicator {
+    background-color: #1976d2;
+}
+.tabs .tab .a:focus, .tabs .tab a:focus.active{
+    background: transparent;
+}
 #dashboard{
     margin-left: 15px;
 }

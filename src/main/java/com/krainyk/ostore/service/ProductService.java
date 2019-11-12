@@ -1,6 +1,7 @@
 package com.krainyk.ostore.service;
 
 import com.krainyk.ostore.dto.request.PaginationRequest;
+import com.krainyk.ostore.dto.request.ProductCriteriaRequest;
 import com.krainyk.ostore.dto.request.ProductRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
 import com.krainyk.ostore.dto.respond.ProductRespond;
@@ -9,6 +10,7 @@ import com.krainyk.ostore.entity.Product;
 import com.krainyk.ostore.entity.SpecificationValue;
 import com.krainyk.ostore.exceptions.NoMatchesException;
 import com.krainyk.ostore.repository.ProductRepository;
+import com.krainyk.ostore.specification.ProductSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,6 +97,11 @@ public class ProductService {
 
     public PageRespond<ProductRespond> findByNameLike(String value, PaginationRequest request) {
         Page<Product> data = productRepository.findAllByNameLike('%' + value + '%', request.toPageable());
+        return pageToPageRespond(data);
+    }
+
+    public PageRespond<ProductRespond> findByCriteria(ProductCriteriaRequest request, PaginationRequest paginationRequest) {
+        Page<Product> data = productRepository.findAll(new ProductSpecification(request), paginationRequest.toPageable());
         return pageToPageRespond(data);
     }
 
