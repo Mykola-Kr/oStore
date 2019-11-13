@@ -61,7 +61,7 @@ public class ProductSpecification implements Specification<Product> {
         if (productLabelId == null) {
             return cb.conjunction();
         } else {
-            Join<Product, ProductLabel> productLabelJoin = root.join("productLabel");
+            Join<Product, ProductLabel> productLabelJoin = root.join("label");
             return cb.equal(productLabelJoin.get("id"), productLabelId);
         }
     }

@@ -55,7 +55,7 @@ const getAllDeliveries = () => {
     })
 };
 
-//sorting productLabel
+//sorting label
 const getSortedBy = field => {
     $.ajax({
         url: `${HOST}/delivery?direction=${asc ? 'ASC' : 'DESC'}&fieldName=${field}`,

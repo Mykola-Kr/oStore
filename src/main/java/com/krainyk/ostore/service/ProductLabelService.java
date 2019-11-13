@@ -43,7 +43,7 @@ public class ProductLabelService {
         if (productLabel.getProducts().isEmpty()) {
             productLabelRepository.delete(productLabel);
         } else {
-            throw new HasDependenciesException("Cannot delete productLabel with id " + id + " because it has dependencies");
+            throw new HasDependenciesException("Cannot delete label with id " + id + " because it has dependencies");
         }
     }
 

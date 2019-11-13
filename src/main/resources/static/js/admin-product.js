@@ -27,10 +27,8 @@ const $modalFooter = $('#footer');
 const $nameSearch = $('#name_search');
 const $pagination = $('.pagination');
 let sortedField = 'name';
-let filterName = '';
-let choiceForPagination = 'all';
 let asc = true;
-let pageSize = 6;
+let pageSize = 2;
 let page = 0;
 let pages = 0;
 
@@ -44,15 +42,14 @@ const error = {
 const get = {
     type: 'GET',
     success: res => {
-        // $pagination.html('');
-        console.log(res);
+        $pagination.html('');
         $productTable.html('');
         appendProducts(res.data);
         clickOnUpdateButton();
         clickOnDeleteButton();
-        // clickOnSort();
-        // appendPages(res.totalPages, +page + 1);
-        // pages = res.totalPages;
+        onInfoName();
+        appendPages(res.totalPages, +page + 1);
+        pages = res.totalPages;
     },
     ...error
 };
@@ -78,7 +75,7 @@ const appendProduct = (product) => {
     $productTable.append(`
     <tr>
         <td>${product.id}</td>    
-        <td><a href="#!" data-target="modal_details" class="modal-trigger" data-id="${product.id}">${product.name}</a></td>
+        <td><a href="#!" data-target="modal_details" class="full_info modal-trigger " data-id="${product.id}">${product.name}</a></td>
         <td>${product.price}</td>
         <td>${product.quantity}</td>
         <td><img id="product_img${product.id}" width="100" src="${HOST}/images/${product.img}"></td>
@@ -101,11 +98,43 @@ const appendProducts = (products) => {
 };
 
 const getAllProducts = () => {
-    $.ajax({
-        url: `${HOST}/product/byCriteria?page=${page}&size=${pageSize}&direction=${asc ? 'ASC' : 'DESC'}&fieldName=${sortedField}`,
-        ...get,
-    })
+    let address = `${HOST}/product/byCriteria?&name=${$nameSearch.val()}&maxQuantity=${$maxQuantityFilter.val()}&maxPrice=${$maxPriceFilter.val()}
+        &minPrice=${$minPriceFilter.val()}&minQuantity=${$minQuantityFilter.val()}
+        &page=${page}&size=${pageSize}&direction=${asc ? 'ASC' : 'DESC'}&fieldName=${sortedField}`;
+
+    if ($subcategoryFilterSelect.val() != null && $labelFilterSelect.val() != null) {
+        $.ajax({
+            url: `${address}&subcategoryId=${$subcategoryFilterSelect.val()}&productLabelId=${$labelFilterSelect.val()}`,
+            ...get,
+        });
+    } else if ($subcategoryFilterSelect.val() != null && $labelFilterSelect.val() === null) {
+        $.ajax({
+            url: `${address}&subcategoryId=${$subcategoryFilterSelect.val()}`,
+            ...get,
+        });
+    } else if ($categorySelectFilter.val() != null && $subcategoryFilterSelect.val() === null && $labelFilterSelect.val() != null ) {
+        $.ajax({
+            url: `${address}&categoryId=${$categorySelectFilter.val()}&productLabelId=${$labelFilterSelect.val()}`,
+            ...get,
+        });
+    } else if ($categorySelectFilter.val() != null && $subcategoryFilterSelect.val() === null && $labelFilterSelect.val() === null) {
+        $.ajax({
+            url: `${address}&categoryId=${$categorySelectFilter.val()}`,
+            ...get,
+        });
+    } else if ($categorySelectFilter.val() === null && $subcategoryFilterSelect.val() === null && $labelFilterSelect.val() != null) {
+        $.ajax({
+            url: `${address}&productLabelId=${$labelFilterSelect.val()}`,
+            ...get,
+        });
+    } else {
+        $.ajax({
+            url: `${address}`,
+            ...get,
+        });
+    }
 };
+
 //--------------------------------------------------------------------------------------------------
 // form select category
 const getCategory = () => {
@@ -217,23 +246,14 @@ const onSubcategoryCreateSelect = () => {
     })
 };
 //---------------------------------------------------------------------------------------------------------------------
-//sorting specification values
-const getSortedBy = field => {
-    $.ajax({
-        url: `${HOST}/specificationValue/pages?page=${page}&size=${pageSize}&direction=${asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
-        ...get,
-    });
-};
+//sorting products
 
-const clickOnSort = _ => {
-    $('.sort').off().on('click', e => {
-        sortedField = e.target.getAttribute('data-id');
-        choiceForPagination = sortedField;
-        console.log(choiceForPagination);
-        asc = !asc;
-        getSortedBy(sortedField);
-    });
-};
+$('.sort').off().on('click', e => {
+    page = 0;
+    sortedField = e.target.getAttribute('data-id');
+    asc = !asc;
+    getAllProducts();
+});
 //-----------------------------------------------------------------------------------------------------
 //creating product
 function appGetBase64(file) {
@@ -353,32 +373,27 @@ const confirmDelete = (id) => {
     });
 };
 //---------------------------------------------------------------------------------------------
-//filter-----------
-const findByName = () => {
-    $.ajax({
-        url: `${HOST}/specificationValue/byName?value=${filterName}&page=${page}&size=${pageSize}`,
-        ...get
-    });
-};
-
-const findBySpecification = () => {
-    $.ajax({
-        url: `${HOST}/specificationValue/bySpecificationId/${$specificationSelectFilter.val()}?page=${page}&size=${pageSize}`,
-        ...get
-    });
-};
-
-const onSpecificationSelect = () => {
-    choiceForPagination = 'specification';
-    findBySpecification();
-};
+//filter---------------------------------------------------------------------
 
 $nameSearch.keyup( e => {
-    choiceForPagination = 'filter';
-    getSpecification();
-    $specificationValueTable.html('');
-    filterName = e.target.value;
-    findByName();
+    page = 0;
+    getAllProducts();
+});
+$minPriceFilter.keyup( e => {
+    page = 0;
+    getAllProducts();
+});
+$maxPriceFilter.keyup( e => {
+    page = 0;
+    getAllProducts();
+});
+$minQuantityFilter.keyup( e => {
+    page = 0;
+    getAllProducts();
+});
+$maxQuantityFilter.keyup( e => {
+    page = 0;
+    getAllProducts();
 });
 //---------------------------------------------------------------------------------------------------
 
@@ -397,27 +412,55 @@ const appendPages =(number, selectedPage) => {
 
 $pagination.on('click',e => {
     page = e.target.getAttribute('data-id');
-    console.log('hi');
     if (page >= 0 && page < pages ) {
-        switch (choiceForPagination) {
-            case 'all':
-                getAllSpecificationValues();
-                console.log('all');
-                break;
-            case 'filter':
-                findByName();
-                break;
-            case 'specification':
-                findBySpecification();
-                break;
-            case sortedField:
-                getSortedBy(sortedField);
-                console.log(sortedField);
-                break;
-        }
+        getAllProducts();
     }
 });
+//-----------------------------------------------------------------------------------------------
+// form modal info for product
+const onInfoName = () => {
+    $('.full_info').click( e => {
+        console.log('hi');
+        let id = e.target.getAttribute('data-id');
+        console.log(id);
+        initInfoForm(id);
+    });
+};
 
+const initInfoForm = (id) => {
+    $.ajax({
+        url: `${HOST}/product/oneFullInfo/${id}`,
+        type: 'GET',
+        success: res => {
+            console.log(res);
+            $('#name_info').text(`NAME: ${res.name}`);
+            $('#price_info').text(`PRICE: ${res.price}`);
+            $('#quantity_info').text(`QUANTITY: ${res.quantity}`);
+            if (res.img === null) {
+                $('#img_info').attr('src', 'files/no_foto.png');
+            } else {
+                $('#img_info').attr('src', `${HOST}/images/${res.img}`);
+            }
+            if (res.rating === null) {
+                $('#rating_info').text('RATING: No rating yet');
+            } else {
+                $('#rating_info').text(`RATING: ${res.rating}`);
+            }
+            $('#category_info').text(`CATEGORY: ${res.categoryName}`);
+            $('#subcategory_info').text(`SUBCATEGORY: ${res.subcategoryRespond.name}`);
+            $('#label_info').text(`PRODUCT LABEL: ${res.productLabelRespond.name}`);
+            $('#description_info').html(`<p>${res.description}</p>`);
+            if (res.specificationValueResponds === null) {
+                $('#specification_info').html(`<h6>There is not any chosen specification</h6>`)
+            } else {
+                $('#specification_list').html(``);
+                res.specificationValueResponds.forEach(value => $('#specification_list')
+                    .append(`<li class="collection-item"><div>${value.specificationName}:<a class="secondary-content">${value.value}</a></div></li>`));
+            }
+        },
+        ...error
+    })
+};
 
 getAllProducts();
 getCategory();
@@ -426,5 +469,18 @@ getProductLabel();
 $categorySelectCreate.change(onCategoryCreateSelect);
 $categorySelectFilter.change(onCategoryFilterSelect);
 $subcategorySelectCreate.change(onSubcategoryCreateSelect);
-// $specificationSelectFilter.change(onSpecificationSelect);
-console.log($labelFilterSelect.val());
+
+$labelFilterSelect.change(() => {
+    page = 0;
+    getAllProducts();
+});
+$categorySelectFilter.change(() => {
+    page = 0;
+    getAllProducts();
+});
+$subcategoryFilterSelect.change(() => {
+    page = 0;
+    getAllProducts();
+});
+
+

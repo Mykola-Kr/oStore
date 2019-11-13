@@ -4,6 +4,7 @@ import com.krainyk.ostore.dto.request.PaginationRequest;
 import com.krainyk.ostore.dto.request.ProductCriteriaRequest;
 import com.krainyk.ostore.dto.request.ProductRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
+import com.krainyk.ostore.dto.respond.ProductForFullInfoRespond;
 import com.krainyk.ostore.dto.respond.ProductRespond;
 import com.krainyk.ostore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,11 @@ public class ProductController {
     @GetMapping("/one/{id}")
     public ProductRespond findOne(@PathVariable Long id) {
         return productService.findOneRespond(id);
+    }
+
+    @GetMapping("/oneFullInfo/{id}")
+    public ProductForFullInfoRespond findOneFullInfo(@PathVariable Long id) {
+        return productService.findOneFullInfo(id);
     }
 
     @PutMapping

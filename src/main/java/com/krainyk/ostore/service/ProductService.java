@@ -4,6 +4,7 @@ import com.krainyk.ostore.dto.request.PaginationRequest;
 import com.krainyk.ostore.dto.request.ProductCriteriaRequest;
 import com.krainyk.ostore.dto.request.ProductRequest;
 import com.krainyk.ostore.dto.respond.PageRespond;
+import com.krainyk.ostore.dto.respond.ProductForFullInfoRespond;
 import com.krainyk.ostore.dto.respond.ProductRespond;
 import com.krainyk.ostore.entity.Comment;
 import com.krainyk.ostore.entity.Product;
@@ -13,8 +14,6 @@ import com.krainyk.ostore.repository.ProductRepository;
 import com.krainyk.ostore.specification.ProductSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -118,5 +117,9 @@ public class ProductService {
 
     public ProductRespond findOneRespond(Long id) {
         return new ProductRespond(findOne(id));
+    }
+
+    public ProductForFullInfoRespond findOneFullInfo(Long id) {
+        return new ProductForFullInfoRespond(findOne(id));
     }
 }

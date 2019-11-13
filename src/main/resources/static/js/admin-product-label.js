@@ -55,7 +55,7 @@ const getAllProductLabels = () => {
     })
 };
 
-//sorting productLabel
+//sorting label
 const getSortedBy = field => {
     $.ajax({
         url: `${HOST}/productLabel?direction=${asc ? 'ASC' : 'DESC'}&fieldName=${field}`,
@@ -71,7 +71,7 @@ const clickOnSort = _ => {
     });
 };
 //---------------------------------------------------------------------------------------------------------------
-// creating new productLabel
+// creating new label
 $createButton.click( e => {
     console.log($nameInput.val());
     const request = {
@@ -135,7 +135,7 @@ $update.click( e => {
 });
 //--------------------------------------------------------------------------------------------------
 
-//delete productLabel
+//delete label
 const deleteRequest = id => {
     $.ajax({
         url: `${HOST}/productLabel?id=` + id,
