@@ -11,57 +11,9 @@
 </head>
 <body>
 <header>
-    <!--nav-------------------------------->
-    <nav class="fixes">
-        <div class="nav-wrapper blue-grey darken-1">
-            <a href="#" class="brand-logo">oStore</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#">User</a></li>
-                <li><a href="#">Log out</a></li>
-            </ul>
-        </div>
-    </nav>
-    <!----------------------------------------------------------->
-    <!-- sidenav menu--------------------------------------------------->
-    <ul id="catalog" class="sidenav sidenav-fixed invisible-top blue-grey darken-1">
-        <li>
-            <h6 id="dashboard" class="white-text">Dashboard:</h6>
-            <ul id="catalog-ul" class="collapsible">
-                <li>
-                    <a class="collapsible-header white-text">Catalog</a>
-                    <div class="collapsible-body">
-                        <ul id="" class="collection grey lighten-2">
-                            <li><a href="admin-category.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">category</a></li>
-                            <li><a href="admin-subcategory.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">subcategory</a></li>
-                            <li><a href="admin-product.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">product</a></li>
-                            <li><a href="admin-specification.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification</a></li>
-                            <li><a href="admin-specification-value.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">specification value</a></li>
-                            <li><a href="admin-product-label.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">product label</a></li>
-                            <li><a href="admin-delivery.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery</a></li>
-                            <li><a href="admin-delivery-status.html" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">delivery status</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a class="collapsible-header white-text">Sales</a>
-                    <div class="collapsible-body">
-                        <ul class="collection grey lighten-2">
-                            <li><a href="admin-order" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">orders</a></li>
-                            <li><a href="admin-order-status" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">order status</a></li>
-                            <li><a href="#" class="open-catalog-by-category indigo-text text-lighten-1" data-id="">returns</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="admin-customers" class="collapsible-header white-text">Customers</a>
-                </li>
-                <li>
-                    <a href="admin-comments" class="collapsible-header white-text">Comments</a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-    <!------------------------------------------------------------------>
+    <div id="nav_placeholder">
+
+    </div>
 </header>
 
 <main>
@@ -162,12 +114,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="js/admin-subcategory.js"></script>
 <script>
-    $(document).ready(function () {
-        $('.collapsible').collapsible();
-        $('.sidenav').sidenav();
-        $('.select').formSelect();
-        $('.modal').modal();
-    });
+    $.get('nav.html', function (data) {
+        $('#nav_placeholder').replaceWith(data);
+    })
 </script>
 </body>
 </html>

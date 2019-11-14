@@ -420,9 +420,7 @@ $pagination.on('click',e => {
 // form modal info for product
 const onInfoName = () => {
     $('.full_info').click( e => {
-        console.log('hi');
         let id = e.target.getAttribute('data-id');
-        console.log(id);
         initInfoForm(id);
     });
 };
