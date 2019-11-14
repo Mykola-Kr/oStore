@@ -220,6 +220,7 @@ const onSubcategoryCreateSelect = () => {
         type: 'GET',
         success: res => {
             $('#specification_note').hide();
+            $('#specification_selects').html('');
             for (const specification of res) {
                 $('#specification_selects').append(`<div class="input-field col s12">
                 <select multiple id="create_form_specification_select${specification.id}" class="specification_select">
@@ -265,6 +266,7 @@ function appGetBase64(file) {
     });
 }
 
+
 $createButton.click( e => {
     let arraySpecificationValuesIds = new Array();
     $('.specification_select').each(function () {
@@ -280,7 +282,6 @@ $createButton.click( e => {
         productLabelId: $labelCreateSelect.val(),
         description: $descriptionInputCreate.val(),
         specificationsValuesIds: arraySpecificationValuesIds
-        // specificationId: $specificationSelectCreate.val()
     };
     appGetBase64($imgInput[0].files[0]).then(photo => data.img = photo)
         .catch()
@@ -314,6 +315,46 @@ const clickOnUpdateButton = () => {
     })
 };
 
+const formSpecificationUpdateSelects = (id, array) => {
+    $.ajax({
+        url: `${HOST}/specification/bySubcategory/${id}`,
+        type: 'GET',
+        success: res => {
+            $('#specification_note').hide();
+            // $('#specification_selects').html('');
+            for (const specification of res) {
+                $('#specification_selects').append(`<div class="input-field col s12">
+                <select multiple id="create_form_specification_select${specification.id}" class="specification_select">
+                <option value="" disabled>Choose ${specification.name} specification</option>
+                </select>
+                </div>`);
+                $('.specification_select').formSelect();
+                $.ajax({
+                    url: `${HOST}/specificationValue/bySpecificationId/${specification.id}?page=0&size=1000`,
+                    type: 'GET',
+                    success: res => {
+                        for (const specificationValue of res.data) {
+                            for (const x of array) {
+                                if (x===specificationValue.id) {
+                                    $(`#create_form_specification_select${specification.id}`).append(
+                                        `<option class="specification" selected value="${specificationValue.id}">${specificationValue.value}</option>`
+                                    );
+                                }
+                            }
+                            $(`#create_form_specification_select${specification.id}`).append(
+                                `<option class="specification" value="${specificationValue.id}">${specificationValue.value}</option>`
+                            );
+                            $(`#create_form_specification_select${specification.id}`).formSelect();
+                        };
+                    },
+                    ...error
+                })
+            };
+        },
+        ...error
+    })
+};
+
 const initUpdateForm = (id) => {
     $.ajax({
         url: `${HOST}/product/one/` + id,
@@ -325,26 +366,46 @@ const initUpdateForm = (id) => {
             $priceInputCreate.val(res.price).focus();
             $quantityInputCreate.val(res.quantity).focus();
             $descriptionInputCreate.val(res.description).focus();
-            // $specificationSelectCreate.val(res.specificationId).formSelect();
             $createButton.hide();
             $modalFooter.show();
             $update.attr('data-id', id);
+            $('#specification_selects').html('');
+            formSpecificationUpdateSelects(res.subcategoryId, res.specificationsValuesIds);
         }
     })
 };
 
 $update.click( e => {
-    $.ajax({
-        url: `${HOST}/specificationValue?id=` + $update.attr('data-id'),
-        type: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({value: $nameInput.val(),
-            specificationId: $specificationSelectCreate.val()}),
-        success: res => {
-            getAllSpecificationValues();
-        },
-        ...error
+    let arraySpecificationValuesIds = new Array();
+    $('.specification_select').each(function () {
+        for(const id of $(this).val()) {
+            arraySpecificationValuesIds.push(id);
+        }
     });
+    const data = {
+        name: $nameInput.val(),
+        price: $priceInputCreate.val(),
+        quantity: $quantityInputCreate.val(),
+        subcategoryId: $subcategorySelectCreate.val(),
+        productLabelId: $labelCreateSelect.val(),
+        description: $descriptionInputCreate.val(),
+        specificationsValuesIds: arraySpecificationValuesIds
+    };
+    appGetBase64($imgInput[0].files[0]).then(photo => data.img = photo)
+        .catch()
+        .finally(_ => {
+            $.ajax({
+                url: `${HOST}/product?id=` + $update.attr('data-id'),
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: res => {
+                    clearFields();
+                    getAllProducts();
+                },
+                ...error
+            })
+        });
 });
 //------------------------------------------------------------------------------------------------------------------
 //delete product
@@ -395,6 +456,18 @@ $maxQuantityFilter.keyup( e => {
     page = 0;
     getAllProducts();
 });
+$labelFilterSelect.change(() => {
+    page = 0;
+    getAllProducts();
+});
+$categorySelectFilter.change(() => {
+    page = 0;
+    getAllProducts();
+});
+$subcategoryFilterSelect.change(() => {
+    page = 0;
+    getAllProducts();
+});
 //---------------------------------------------------------------------------------------------------
 
 // pagination-------------------------------------
@@ -417,48 +490,7 @@ $pagination.on('click',e => {
     }
 });
 //-----------------------------------------------------------------------------------------------
-// form modal info for product
-const onInfoName = () => {
-    $('.full_info').click( e => {
-        let id = e.target.getAttribute('data-id');
-        initInfoForm(id);
-    });
-};
 
-const initInfoForm = (id) => {
-    $.ajax({
-        url: `${HOST}/product/oneFullInfo/${id}`,
-        type: 'GET',
-        success: res => {
-            console.log(res);
-            $('#name_info').text(`NAME: ${res.name}`);
-            $('#price_info').text(`PRICE: ${res.price}`);
-            $('#quantity_info').text(`QUANTITY: ${res.quantity}`);
-            if (res.img === null) {
-                $('#img_info').attr('src', 'files/no_foto.png');
-            } else {
-                $('#img_info').attr('src', `${HOST}/images/${res.img}`);
-            }
-            if (res.rating === null) {
-                $('#rating_info').text('RATING: No rating yet');
-            } else {
-                $('#rating_info').text(`RATING: ${res.rating}`);
-            }
-            $('#category_info').text(`CATEGORY: ${res.categoryName}`);
-            $('#subcategory_info').text(`SUBCATEGORY: ${res.subcategoryRespond.name}`);
-            $('#label_info').text(`PRODUCT LABEL: ${res.productLabelRespond.name}`);
-            $('#description_info').html(`<p>${res.description}</p>`);
-            if (res.specificationValueResponds === null) {
-                $('#specification_info').html(`<h6>There is not any chosen specification</h6>`)
-            } else {
-                $('#specification_list').html(``);
-                res.specificationValueResponds.forEach(value => $('#specification_list')
-                    .append(`<li class="collection-item"><div>${value.specificationName}:<a class="secondary-content">${value.value}</a></div></li>`));
-            }
-        },
-        ...error
-    })
-};
 
 getAllProducts();
 getCategory();
@@ -468,17 +500,6 @@ $categorySelectCreate.change(onCategoryCreateSelect);
 $categorySelectFilter.change(onCategoryFilterSelect);
 $subcategorySelectCreate.change(onSubcategoryCreateSelect);
 
-$labelFilterSelect.change(() => {
-    page = 0;
-    getAllProducts();
-});
-$categorySelectFilter.change(() => {
-    page = 0;
-    getAllProducts();
-});
-$subcategoryFilterSelect.change(() => {
-    page = 0;
-    getAllProducts();
-});
+
 
 
