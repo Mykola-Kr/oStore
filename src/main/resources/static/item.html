@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="">
+    <title>Product catalog</title>
+    <style>
+        section {
+            padding-top: 2vw;
+            padding-bottom: 2vw;
+        }
+        .tabs .indicator {
+            background-color: #1a237e;
+        }
+        .tabs .tab .a:focus, .tabs .tab a:focus.active{
+            background: transparent;
+        }
+        .badge {
+            position: relative;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-fixed">
+        <nav class="teal">
+            <div class="naw-wrapper">
+                <div class="container">
+                    <a href="#!" class="brand-logo center">oStore</a>
+                    <a href="#!" data-target="catalog-nav" class="sidenav-trigger">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <ul class="left hide-on-med-and-down">
+                        <li>
+                            <a href="#" data-target="catalog-nav" class="sidenav-trigger show-on-large">Catalog</a>
+                        </li>
+                    </ul>
+                    <ul class="right hide-on-small-only">
+                        <li>
+                            <a href="/cart" class="cart-btn btn-floating indigo lighten-2 center">
+                                <i class="material-icons">person_outline</i></a>
+                        </li>
+                        <li>
+                            <a href="/cart" class="cart-btn btn-floating indigo lighten-2 center">
+                                <i class="material-icons">shopping_cart</i></a>
+                        </li>
+                        <li>
+                            <span id="cart-badge!" class="badge white-text pink darken-2">0</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!--sidenav catalog-->
+    <ul id="catalog-nav" class="sidenav green lighten-4">
+        <li>
+            <h6 class="center indigo-text text-darken-4">CATALOG:</h6>
+            <ul id="catalog-ul" class="catalog-ul collapsible">
+            </ul>
+        </li>
+    </ul>
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div id="product-img" class="col s12 l7"></div>
+                <div class="col s12 l5">
+                    <h4 id="title"></h4> <br>
+                    <h6 id="price"></h6> <br>
+                    <h6 id="rating"></h6> <br> <br>
+                    <a id="buy-btn" href="/cart" class="buy btn indigo">BUY</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <ul class="tabs">
+                <li class="tab col s6">
+                    <a href="#description" class="indigo-text text-darken-4">Description</a>
+                </li>
+                <li class="tab col s6">
+                    <a href="#specifications" class="indigo-text text-darken-4">Specifications</a>
+                </li>
+                <li class="tab col s6">
+                    <a href="#comments" class="indigo-text text-darken-4">Comments</a>
+                </li>
+            </ul>
+            <div class="col s12" id="description">
+                <p class="flow-text indigo-text text-darken-4">DESCRIPTION</p>
+            </div>
+            <div class="col s12" id="specifications">
+                <p class="flow-text indigo-text text-darken-4">SPECIFICATIONS</p>
+                <ul class="specification-collection collection">
+                </ul>
+            </div>
+            <div class="col s12" id="comments">
+                <p class="flow-text indigo-text text-darken-4">COMMENTS</p>
+                <ul class="comments-collection collection">
+                </ul>
+            </div>
+        </div>
+    </section>
+
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="js/common.js"></script>
+<script src="js/item.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.sidenav').sidenav();
+        $('.select').formSelect();
+        $('.modal').modal();
+        $('.tabs').tabs();
+    });
+</script>
+</body>
+</html>

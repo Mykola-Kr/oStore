@@ -1,12 +1,11 @@
-const HOST = 'http://localhost:8080';
-const $categoryTable = $('#categories');
 const $createButton = $('#submit-btn');
 const $nameInput = $('#icon_name_create');
+const $categoryTable = $('#categories');
 const $openCreateForm = $('#open_create_form');
 const $update = $('#update');
 const $modalName = $('#modal_header');
 const $modalFooter = $('#footer');
-var $asc = true;
+let $asc = true;
 
 // creating table
 const appendCategory = (category) => {

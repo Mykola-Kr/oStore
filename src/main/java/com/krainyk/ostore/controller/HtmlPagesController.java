@@ -40,4 +40,14 @@ public class HtmlPagesController {
     public String adminProduct() {
         return "admin-product.html";
     }
+
+    @RequestMapping("catalog")
+    public String catalog() {
+        return "catalog.html";
+    }
+
+    @RequestMapping("item")
+    public String product() {
+        return "item.html";
+    }
 }

@@ -1,6 +1,4 @@
-const HOST = 'http://localhost:8080';
 const $productTable = $('#products');
-const $categorySelects = $('.category_select');
 const $categorySelectCreate = $('#create_form_category_select');
 const $categorySelectFilter = $('#category_filter_select');
 const $subcategorySelects = $('.subcategory_select');
@@ -25,7 +23,6 @@ const $update = $('#update');
 const $modalName = $('#modal_header');
 const $modalFooter = $('#footer');
 const $nameSearch = $('#name_search');
-const $pagination = $('.pagination');
 let sortedField = 'name';
 let asc = true;
 let pageSize = 2;
@@ -63,7 +60,7 @@ const clearFields = () => {
     $imgPath.val('');
     $('#specification_selects').html('');
     $('#specification_note').show();
-    getCategory();
+    getCategories();
     getSubcategory();
     getProductLabel();
     $modalFooter.hide();
@@ -136,22 +133,6 @@ const getAllProducts = () => {
 };
 
 //--------------------------------------------------------------------------------------------------
-// form select category
-const getCategory = () => {
-    $.ajax({
-        url: `${HOST}/category`,
-        type: 'GET',
-        success: res => {
-            $categorySelects.formSelect().html(`<option disabled selected>Choose category</option>`);
-            for (const category of res) {
-                $categorySelects.append(`<option value="${category.id}">${category.name}</option>`);
-            }
-            $categorySelects.formSelect();
-        },
-        ...error
-    });
-};
-//---------------------------------------------------------------------------------------------------
 // form product label selects
 const getProductLabel = () => {
     $.ajax({
@@ -471,17 +452,6 @@ $subcategoryFilterSelect.change(() => {
 //---------------------------------------------------------------------------------------------------
 
 // pagination-------------------------------------
-const appendPages =(number, selectedPage) => {
-    $pagination.append(`<li class="waves-effect"><a data-id="${selectedPage} href="#!"><i data-id="${selectedPage-2}" class="material-icons">chevron_left</i></a></li>`);
-    for (i = 1; i<= number; i++) {
-        if (i == selectedPage) {
-            $pagination.append(`<li class="active"><a data-id="${i-1}" class="page" href="#!">${i}</a></li>`)
-        } else {
-            $pagination.append(`<li class="waves-effect"><a data-id="${i-1}" class="page" href="#!">${i}</a></li>`)
-        }
-    }
-    $pagination.append(`<li class="waves-effect" ><a data-id="${selectedPage} href="#!"><i data-id="${selectedPage}" class="material-icons">chevron_right</i></a></li>`)
-};
 
 $pagination.on('click',e => {
     page = e.target.getAttribute('data-id');
@@ -493,7 +463,7 @@ $pagination.on('click',e => {
 
 
 getAllProducts();
-getCategory();
+getCategories();
 getSubcategory();
 getProductLabel();
 $categorySelectCreate.change(onCategoryCreateSelect);

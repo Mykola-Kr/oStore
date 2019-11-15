@@ -1,4 +1,3 @@
-const HOST = 'http://localhost:8080';
 const $productLabelTable = $('#product_label');
 const $createButton = $('#submit-btn');
 const $nameInput = $('#icon_name_create');
