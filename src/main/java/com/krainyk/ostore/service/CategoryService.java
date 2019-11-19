@@ -32,8 +32,6 @@ public class CategoryService {
         categoryRepository.save(categoryRequestToCategory(null, request));
     }
 
-    // method for finding one category by it's id for using in update, delete methods. It throws exception if
-    // category with such id doesn't exist
     public Category findOne(Long id) {
         return categoryRepository.findById(id).orElseThrow(() -> new NoMatchesException("Category with id " + id
                 + " doesn't exist"));
@@ -51,7 +49,6 @@ public class CategoryService {
         else throw new HasDependenciesException("Cannot delete category with id " + id + " because it has dependencies");
     }
 
-    // method for finding all categories, changing them in CategoryRespond
     public List<CategoryRespond> findAll(Sort.Direction direction, String fieldName) {
         return categoryRepository.findAll(Sort.by(direction, fieldName)).stream().map(CategoryRespond::new).collect(Collectors.toList());
     }

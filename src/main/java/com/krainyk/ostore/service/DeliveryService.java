@@ -30,7 +30,7 @@ public class DeliveryService {
         deliveryRepository.save(deliveryRequestToDelivery(null, request));
     }
 
-    private Delivery findOne(Long id) {
+    public Delivery findOne(Long id) {
         return deliveryRepository.findById(id).orElseThrow(() ->
                 new NoMatchesException("Delivery with id " + id + " does not exist."));
     }

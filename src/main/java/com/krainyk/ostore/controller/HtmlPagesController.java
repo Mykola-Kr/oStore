@@ -50,4 +50,9 @@ public class HtmlPagesController {
     public String product() {
         return "item.html";
     }
+
+    @RequestMapping("cart")
+    public String cart() {
+        return "cart.html";
+    }
 }

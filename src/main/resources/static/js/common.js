@@ -1,6 +1,6 @@
 const HOST = 'http://localhost:8080';
 const searchParams = new URLSearchParams(window.location.search);
-const $catalogNav = $('.catalog-ul');
+const $catalogNav = $('#catalog-ul');
 
 const error = {
     error: err => {

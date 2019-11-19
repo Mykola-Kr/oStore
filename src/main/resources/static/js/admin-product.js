@@ -61,7 +61,7 @@ const clearFields = () => {
     $('#specification_selects').html('');
     $('#specification_note').show();
     getCategories();
-    getSubcategory();
+    getSubcategoryForSelect();
     getProductLabel();
     $modalFooter.hide();
     $createButton.show();
@@ -149,7 +149,7 @@ const getProductLabel = () => {
     });
 };
 //- form select subcategory
-const getSubcategory = () => {
+const getSubcategoryForSelect = () => {
     $.ajax({
         url: `${HOST}/subcategory`,
         type: 'GET',
@@ -464,7 +464,7 @@ $pagination.on('click',e => {
 
 getAllProducts();
 getCategories();
-getSubcategory();
+getSubcategoryForSelect();
 getProductLabel();
 $categorySelectCreate.change(onCategoryCreateSelect);
 $categorySelectFilter.change(onCategoryFilterSelect);

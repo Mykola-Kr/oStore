@@ -17,7 +17,9 @@ const getProductInfo = () => {
             $('#buy-btn').attr('data-id', `${res.id}`);
             $('#description').append(`<p>${res.description}</p>`);
             for (const specification of res.specificationValueResponds) {
-                $('.specification-collection').append(`<li class="collection-item"><span class="secondary-content indigo-text text-darken-4">${specification.value}</span>${specification.specificationName}</li>`)
+                $('.specification-collection').append(`<li class="collection-item">
+                                    <span class="secondary-content indigo-text text-darken-4">${specification.value}</span>
+                                    ${specification.specificationName}</li>`)
             }
             $('.materialboxed').materialbox();
         },

@@ -15,15 +15,12 @@ public class FileService {
             System.getProperty("user.home") + File.separator +
                     "images" + File.separator;
 
-//    "/home/kindgeek/images/"
-//    "C:\Users\Study\images\"
-
     public String saveFile(String request) throws IOException {
         createDir(IMG_DIR);//create folder if not exists
 
         String[] data = request.split(",");
-        String metaInfo = data[0]; //data:image/jpeg;base64
-        String base64File = data[1];///9j/4AAQSkZJRgABAQE....
+        String metaInfo = data[0];
+        String base64File = data[1];
 
         String fileName = createFileName(getFileExtensionFromMetaInfo(metaInfo));
 

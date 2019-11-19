@@ -10,7 +10,6 @@ import com.krainyk.ostore.exceptions.NoMatchesException;
 import com.krainyk.ostore.repository.SubcategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -69,11 +68,6 @@ public class SubcategoryService {
         List<SubcategoryRespond> respondList = data.get().map(SubcategoryRespond::new).collect(Collectors.toList());
         return new PageRespond<>(data.getTotalElements(), data.getTotalPages(), respondList);
     }
-
-//    public PageRespond<SubcategoryRespond> findSubcategoryPage(Integer page, Integer size, Sort.Direction direction, String fieldName) {
-//        Page<Subcategory> data = subcategoryRepository.findAll(PageRequest.of(page, size, direction, fieldName));
-//        return pageToPageRespond(data);
-//    }
 
     public PageRespond<SubcategoryRespond> findSubcategoryPage(PaginationRequest request) {
         Page<Subcategory> data = subcategoryRepository.findAll(request.toPageable());

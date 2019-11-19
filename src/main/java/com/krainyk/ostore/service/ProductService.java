@@ -15,7 +15,6 @@ import com.krainyk.ostore.specification.ProductSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -72,7 +71,6 @@ public class ProductService {
 
     public void delete(Long id) {
         Product product = findOne(id);
-    // delete photo ???
         if (product.getImg() != null) {
             File photo = new File(FileService.IMG_DIR + product.getImg());
             photo.delete();

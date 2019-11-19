@@ -18,6 +18,7 @@ const get = {
         $productCatalog.html('');
         appendProductsToCatalog(res.data);
         appendPages(res.totalPages, +page + 1);
+        addProductToCart();
         pages = res.totalPages;
     },
     ...error
@@ -168,6 +169,24 @@ $labelFilterSelect.change(() => {
     page = 0;
     getAllProducts();
 });
+
+const addProductToCart = () => {
+    $('.buy').click((e) => {
+        const cart = JSON.parse(window.localStorage.getItem('cart')) || [];
+        const item = cart.filter(t => e.target.getAttribute('data-id') == t.productId);
+        if (item.length > 0) {
+            item[0].count++;
+        } else {
+            cart.push({
+                productId: e.target.getAttribute('data-id'),
+                count: 1
+            });
+        }
+        window.localStorage.setItem('cart', JSON.stringify(cart));
+        $('#cart-badge').text(cart.length);
+    })
+};
+
 
 getAllProducts();
 getCategories();
