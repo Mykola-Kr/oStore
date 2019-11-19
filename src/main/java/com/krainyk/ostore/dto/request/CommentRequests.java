@@ -1,7 +1,9 @@
 package com.krainyk.ostore.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -16,7 +18,6 @@ public class CommentRequests {
     @Min(1)
     @Max(5)
     private Integer mark;
-    private LocalDateTime dateTime;
     @NotNull
     private Long productId;
     @NotNull

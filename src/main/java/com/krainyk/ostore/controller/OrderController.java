@@ -34,7 +34,7 @@ public class OrderController {
     }
 
     @PutMapping
-    public void update(Long id, @RequestBody OrderRequest request) {
+    public void update(Long id, @Valid @RequestBody OrderRequest request) {
         orderService.update(id, request);
     }
 

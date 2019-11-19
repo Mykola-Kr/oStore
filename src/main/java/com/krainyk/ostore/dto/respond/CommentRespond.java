@@ -1,5 +1,6 @@
 package com.krainyk.ostore.dto.respond;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.krainyk.ostore.entity.Comment;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ public class CommentRespond {
     private Long id;
     private Integer mark;
     private String description;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateTime;
     private Long productId;
     private Long userId;

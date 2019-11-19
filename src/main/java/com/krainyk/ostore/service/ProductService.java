@@ -102,9 +102,9 @@ public class ProductService {
         return pageToPageRespond(data);
     }
 
-    // setting rating for product after creating comment ???
+    // setting rating for product after creating comment
     public void createRating(Long id) {
-        List<Integer> marks = findOne(id).getComments().stream().map(Comment::getMark).collect(Collectors.toList());
+        List<Integer> marks = findOne(id).getComments().stream().filter(p -> p.getIsAllowed()).map(Comment::getMark).collect(Collectors.toList());
         Integer sum = 0;
         for (Integer mark: marks) {
             sum += mark;
