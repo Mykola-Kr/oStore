@@ -30,6 +30,16 @@ public class CommentService {
         return new CommentRespond(findOne(id));
     }
 
+    public PageRespond<CommentRespond> findByProductId(Long id, PaginationRequest request) {
+        Page<Comment> data = commentRepository.findAllByProductId(id, request.toPageable());
+        return pageToPageRespond(data);
+    }
+
+    public PageRespond<CommentRespond> findByProductIdAndIsAllowed(Long id, Boolean isAllowed, PaginationRequest request) {
+        Page<Comment> data = commentRepository.findAllByProductIdAndIsAllowed(id, isAllowed, request.toPageable());
+        return pageToPageRespond(data);
+    }
+
     public PageRespond<CommentRespond> findPage(PaginationRequest request) {
         Page<Comment> data = commentRepository.findAll(request.toPageable());
         return pageToPageRespond(data);
@@ -72,4 +82,5 @@ public class CommentService {
     public void delete(Long id) {
         commentRepository.delete(findOne(id));
     }
+
 }

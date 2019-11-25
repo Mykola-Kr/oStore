@@ -52,3 +52,22 @@ const getSubcategory = () => {
         }
     })
 };
+
+// add product to cart-----------------------------------------------------------------------------
+const addProductToCart = () => {
+    $('.buy').click((e) => {
+        const cart = JSON.parse(window.localStorage.getItem('cart')) || [];
+        const item = cart.filter(t => e.target.getAttribute('data-id') == t.productId);
+        if (item.length > 0) {
+            item[0].count++;
+        } else {
+            cart.push({
+                productId: e.target.getAttribute('data-id'),
+                count: 1,
+                price: e.target.getAttribute('id')
+            });
+        }
+        window.localStorage.setItem('cart', JSON.stringify(cart));
+        $('#cart-badge').text(cart.length);
+    })
+};

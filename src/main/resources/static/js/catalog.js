@@ -1,4 +1,3 @@
-
 const $nameSearch = $('#name_search');
 const $labelFilterSelect = $('#product_label_filter_select');
 const $minPriceFilter = $('#icon_min_price_filter');
@@ -54,7 +53,7 @@ const appendProductToCard =(product) => {
                     <p id="price" class="indigo-text">₴ ${product.price}</p>
                 </div>
                 <div class="card-action">
-                    <a href="#" data-id="${product.id}" class="buy">Buy</a>
+                    <a href="#" id="${product.price}" data-id="${product.id}" class="buy">Buy</a>
                     <a class="view-details" href="/item?id=${product.id}">Details</a>
                 </div>
                 <div id="product-description" class="card-reveal">
@@ -169,24 +168,6 @@ $labelFilterSelect.change(() => {
     page = 0;
     getAllProducts();
 });
-
-const addProductToCart = () => {
-    $('.buy').click((e) => {
-        const cart = JSON.parse(window.localStorage.getItem('cart')) || [];
-        const item = cart.filter(t => e.target.getAttribute('data-id') == t.productId);
-        if (item.length > 0) {
-            item[0].count++;
-        } else {
-            cart.push({
-                productId: e.target.getAttribute('data-id'),
-                count: 1
-            });
-        }
-        window.localStorage.setItem('cart', JSON.stringify(cart));
-        $('#cart-badge').text(cart.length);
-    })
-};
-
 
 getAllProducts();
 getCategories();

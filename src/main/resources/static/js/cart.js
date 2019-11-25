@@ -27,6 +27,7 @@ const addActionToCountDown = () => {
             $count.closest('.item-in-cart').fadeOut();
         }
         window.localStorage.setItem('cart', JSON.stringify(cart));
+        appendTotalPrice();
     });
 };
 
@@ -51,6 +52,7 @@ const addActionToCountUp = () => {
         const el = cart.filter(t => t.productId == id).shift();
         el.count = count;
         window.localStorage.setItem('cart', JSON.stringify(cart));
+        appendTotalPrice();
     });
 };
 
@@ -87,6 +89,18 @@ const appendItems = (items) => {
         });
     }
 };
-appendItems(JSON.parse(window.localStorage.getItem('cart')));
+
+const appendTotalPrice = () => {
+    const cart = JSON.parse(window.localStorage.getItem('cart'));
+    let total = 0;
+    for (let product of cart) {
+        total += (product.price * product.count);
+    }
+    $('#total-price').text(`₴   ${total}`);
+};
+
+
 getCategories();
 getSubcategory();
+appendItems(JSON.parse(window.localStorage.getItem('cart')));
+appendTotalPrice();

@@ -17,6 +17,7 @@ public class CommentRespond {
     private LocalDateTime dateTime;
     private Long productId;
     private Long userId;
+    private String userName;
     private Boolean isAllowed;
 
     public CommentRespond(Comment comment) {
@@ -26,6 +27,7 @@ public class CommentRespond {
         this.dateTime = comment.getDateTime();
         this.productId = comment.getProduct().getId();
         this.userId = comment.getUser().getId();
+        this.userName = comment.getUser().getUsername();
         this.isAllowed = comment.getIsAllowed();
     }
 }

@@ -28,6 +28,16 @@ public class CommentController {
         return commentService.findOneRespond(id);
     }
 
+    @GetMapping("/byProduct")
+    public PageRespond<CommentRespond> findAllByProductId(Long id, @Valid PaginationRequest request) {
+        return commentService.findByProductId(id, request);
+    }
+
+    @GetMapping("/byProductAndIsAllowed")
+    public PageRespond<CommentRespond> findAllByProductIdAndIsAllowed(Long id, Boolean isAllowed, @Valid PaginationRequest request) {
+        return commentService.findByProductIdAndIsAllowed(id, isAllowed, request);
+    }
+
     @PostMapping
     public void create(@Valid @RequestBody CommentRequests requests) {
         commentService.create(requests);
